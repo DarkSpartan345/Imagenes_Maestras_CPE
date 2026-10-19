@@ -1,0 +1,40 @@
+﻿2026-10-15 15:42:55, Info                  DISM   PID=2848 TID=3504 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 15:42:55, Info                  DISM   PID=2848 TID=3504 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 15:42:55, Info                  DISM   PID=2848 TID=3504 Scratch directory set to 'H:\IMG3_V3\Scratch'. - CDISMManager::put_ScratchDir
+2026-10-15 15:42:55, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 15:42:55, Info                  DISM   PID=2848 TID=3504 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 15:42:55, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 15:42:55, Info                  DISM   DISM Provider Store: PID=2848 TID=3504 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 15:42:55, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 15:42:55, Info                  DISM   DISM Manager: PID=2848 TID=3504 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: 
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: 
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: Executing command line: "X:\windows\system32\Dism.exe" /Append-Image /ImageFile:H:\IMG3_V3\Imagenes\Asus_particiones.wim /CaptureDir:D:\ /Name:PARTICION_1 /Description:CPEPART;n=1;tipo=de94bba4-06d1-4d40-a16a-bfd50179d6ac;attr=0x0000000000000000;mb=1322;usado=1203;fs=NTFS;etiqueta=;recovery=1 /CheckIntegrity /Verify /ScratchDir:H:\IMG3_V3\Scratch /LogPath:H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 15:42:55, Error                 DISM   DISM WIM Provider: PID=2848 TID=3504 onecore\base\ntsetup\opktools\dism\providers\wimprovider\dll\wimmanager.cpp:2294 - CWimManager::InternalValidateOptions(hr:0x80070057)
+2026-10-15 15:42:55, Error                 DISM   DISM WIM Provider: PID=2848 TID=3504 onecore\base\ntsetup\opktools\dism\providers\wimprovider\dll\wimmanager.cpp:2125 - CWimManager::ExecuteCmdLine(hr:0x80070057)
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: 
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 15:42:55, Info                  DISM   DISM.EXE: 
+2026-10-15 16:50:27, Info                  DISM   PID=3264 TID=4088 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:50:27, Info                  DISM   PID=3264 TID=4088 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:50:27, Info                  DISM   PID=3264 TID=4088 Scratch directory set to 'H:\IMG3_V3\Scratch'. - CDISMManager::put_ScratchDir
+2026-10-15 16:50:27, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 16:50:27, Info                  DISM   PID=3264 TID=4088 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:50:27, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 16:50:27, Info                  DISM   DISM Provider Store: PID=3264 TID=4088 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:50:27, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 16:50:27, Info                  DISM   DISM Manager: PID=3264 TID=4088 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: 
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: 
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:50:27, Info                  DISM   DISM.EXE: Executing command line: "X:\windows\system32\Dism.exe" /Append-Image /ImageFile:H:\IMG3_V3\Imagenes\Asus_particiones.wim /CaptureDir:D:\ /Name:PARTICION_1 /Description:CPEPART,n-1,tipo-de94bba4-06d1-4d40-a16a-bfd50179d6ac,attr-0x0000000000000000,mb-1322,usado-1203,fs-NTFS,etiqueta-,recovery-1 /CheckIntegrity /Verify /ScratchDir:H:\IMG3_V3\Scratch /LogPath:H:\IMG3_V3\Logs\captura_Asus_particiones_particion1.log
+2026-10-15 17:01:48, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 17:01:48, Info                  DISM   DISM.EXE: 
+2026-10-15 17:01:48, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 17:01:48, Info                  DISM   DISM.EXE: 

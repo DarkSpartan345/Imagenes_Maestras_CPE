@@ -1,0 +1,143 @@
+﻿2026-10-15 16:00:20, Info                  DISM   PID=1060 TID=1928 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:00:20, Info                  DISM   PID=1060 TID=1928 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Warning               DISM   PID=1060 TID=1928 Failed to archive the log file. Continuing with existing log file. - CDISMManager::CreateLocalImageSession(hr:0x80070002)
+2026-10-15 16:00:20, Info                  DISM   PID=1060 TID=1928 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Provider Store: PID=1060 TID=1928 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Manager: PID=1060 TID=1928 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Executing command line: dism  /Capture-Image /ImageFile:H:\prueba.wim /CaptureDir:H:\IMG3_V3\Respuesta /Name:base
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   PID=2348 TID=3576 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:00:20, Info                  DISM   PID=2348 TID=3576 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   PID=2348 TID=3576 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Provider Store: PID=2348 TID=3576 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Manager: PID=2348 TID=3576 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Executing command line: dism  /Append-Image /ImageFile:H:\prueba.wim /CaptureDir:H:\IMG3_V3\Respuesta /Name:P1 /Description:CPEPART;n=1;fs=NTFS
+2026-10-15 16:00:20, Error                 DISM   DISM WIM Provider: PID=2348 TID=3576 onecore\base\ntsetup\opktools\dism\providers\wimprovider\dll\wimmanager.cpp:2294 - CWimManager::InternalValidateOptions(hr:0x80070057)
+2026-10-15 16:00:20, Error                 DISM   DISM WIM Provider: PID=2348 TID=3576 onecore\base\ntsetup\opktools\dism\providers\wimprovider\dll\wimmanager.cpp:2125 - CWimManager::ExecuteCmdLine(hr:0x80070057)
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   PID=3164 TID=3724 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:00:20, Info                  DISM   PID=3164 TID=3724 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   PID=3164 TID=3724 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Provider Store: PID=3164 TID=3724 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:00:20, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:00:20, Info                  DISM   DISM Manager: PID=3164 TID=3724 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Executing command line: dism  /Append-Image /ImageFile:H:\prueba.wim /CaptureDir:H:\IMG3_V3\Respuesta /Name:P2 /Description:CPEPART,n-1,fs-NTFS
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 16:00:20, Info                  DISM   DISM.EXE: 
+2026-10-15 16:04:50, Info                  DISM   PID=1976 TID=156 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:04:50, Info                  DISM   PID=1976 TID=156 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:04:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:04:50, Info                  DISM   PID=1976 TID=156 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:04:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:04:50, Info                  DISM   DISM Provider Store: PID=1976 TID=156 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:04:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:04:50, Info                  DISM   DISM Manager: PID=1976 TID=156 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: 
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: 
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: Executing command line: dism  /Get-ImageInfo /ImageFile:H:\IMG3_V3\Imagenes\Asus_particiones.wim
+2026-10-15 16:04:50, Info                  DISM   DISM Imaging Provider: PID=1976 TID=156 WIM image specified - CGenericImagingManager::GetImageInfoCollection
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: 
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 16:04:50, Info                  DISM   DISM.EXE: 
+2026-10-15 16:07:07, Info                  DISM   PID=2104 TID=3704 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   PID=2104 TID=3704 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:07:07, Info                  DISM   PID=2104 TID=3704 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:07:07, Info                  DISM   PID=3384 TID=3160 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   PID=3384 TID=3160 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:07:07, Info                  DISM   PID=3384 TID=3160 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:07:07, Info                  DISM   PID=492 TID=3120 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   PID=492 TID=3120 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:07:07, Info                  DISM   PID=492 TID=3120 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:07:07, Info                  DISM   PID=3932 TID=2224 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   PID=3932 TID=2224 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:07:07, Info                  DISM   PID=3932 TID=2224 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:07:07, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:29:50, Info                  DISM   PID=1708 TID=2492 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   PID=1708 TID=2492 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:29:50, Info                  DISM   PID=1708 TID=2492 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:29:50, Info                  DISM   PID=4092 TID=3736 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   PID=4092 TID=3736 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:29:50, Info                  DISM   PID=4092 TID=3736 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:29:50, Info                  DISM   PID=8 TID=312 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   PID=8 TID=312 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:29:50, Info                  DISM   PID=8 TID=312 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:29:50, Info                  DISM   PID=3536 TID=3164 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   PID=3536 TID=3164 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:29:50, Info                  DISM   PID=3536 TID=3164 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:29:50, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:40:54, Info                  DISM   PID=3680 TID=2156 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:40:54, Info                  DISM   PID=3680 TID=2156 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:40:54, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:40:54, Info                  DISM   PID=3680 TID=2156 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-15 16:40:54, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:40:54, Info                  DISM   DISM Provider Store: PID=3680 TID=2156 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-15 16:40:54, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:40:54, Info                  DISM   DISM Manager: PID=3680 TID=2156 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: 
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: 
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: Executing command line: dism  /Get-ImageInfo /ImageFile:H:\IMG3_V3\Imagenes\Asus_particiones.wim
+2026-10-15 16:40:54, Info                  DISM   DISM Imaging Provider: PID=3680 TID=2156 WIM image specified - CGenericImagingManager::GetImageInfoCollection
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: 
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-15 16:40:54, Info                  DISM   DISM.EXE: 
+2026-10-15 16:41:16, Info                  DISM   PID=2080 TID=1928 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:41:16, Info                  DISM   PID=2080 TID=1928 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:41:16, Info                  DISM   PID=2080 TID=1928 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:41:16, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:41:17, Info                  DISM   PID=1196 TID=2320 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   PID=1196 TID=2320 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:41:17, Info                  DISM   PID=1196 TID=2320 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:41:17, Info                  DISM   PID=3344 TID=3864 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   PID=3344 TID=3864 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:41:17, Info                  DISM   PID=3344 TID=3864 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log
+2026-10-15 16:41:17, Info                  DISM   PID=3768 TID=2016 Temporarily setting the scratch directory. This may be overridden by user later. - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   PID=3768 TID=2016 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-15 16:41:17, Info                  DISM   PID=3768 TID=2016 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-15 16:41:17, Info                  DISM   Initialized Panther logging at X:\windows\Logs\DISM\dism.log

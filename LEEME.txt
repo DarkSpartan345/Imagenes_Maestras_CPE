@@ -1,0 +1,173 @@
+IMAGEN MAESTRA DE WINDOWS CON HIREN'S BOOTCD PE
+================================================
+
+Copia esta carpeta completa a la RAÍZ de un disco externo (NTFS, con espacio
+suficiente). Estructura:
+
+  IMG3_V2\
+    ImagenMaestra.cmd   <- preparar, capturar y desplegar
+    CuentasCPE.cmd      <- verificación de cada equipo ya desplegado
+    ScriptsEducativos\  <- script que usa CuentasCPE.cmd (no hace falta abrirlo)
+    Imagenes\           <- aquí se guardan los .wim capturados
+    Drivers\            <- (opcional) drivers .inf a inyectar al desplegar
+    Respuesta\          <- (opcional) unattend.xml propio para la configuración inicial
+    Logs\               <- se crea sola con los registros de DISM
+
+
+CÓMO SE USA
+-----------
+Doble clic en ImagenMaestra.cmd. Se abre una ventana con tres pestañas:
+
+    1. Preparar y Sysprep   (Windows, equipo de referencia)
+    2. Capturar imagen      (Hiren's, equipo de referencia)
+    3. Desplegar imagen     (Hiren's, equipo de destino)
+
+En cada pestaña eliges las opciones con casillas y listas (particiones,
+imágenes, índices, discos con modelo y tamaño) y pulsas el botón. Abajo
+se ve el progreso y la salida del proceso en tiempo real; el botón
+"Cancelar" detiene el proceso y "Carpeta Logs" abre los registros.
+En Windows la ventana pide permisos de administrador al abrirse.
+
+Si la ventana no se puede abrir (por ejemplo, en un WinPE sin .NET),
+se muestra automáticamente el menú de texto de siempre.
+
+También se puede llamar directamente con la acción:
+
+    ImagenMaestra.cmd gui        (ventana)
+    ImagenMaestra.cmd menu       (menú de texto)
+    ImagenMaestra.cmd preparar   [-QuitarAppsProblema] [-LimpiezaProfunda] [-SinCopyProfile]
+                                 [-CuentasCPE] [-SinClave] [-OmitirOOBE]
+    ImagenMaestra.cmd capturar   [-Origen D:] [-Nombre x] [-Descripcion "y"] [-Dividir] [-SinExtras]
+    ImagenMaestra.cmd particiones -Origen D:   (solo muestra las particiones)
+    ImagenMaestra.cmd desplegar  [-Imagen ruta.wim] [-Indice 1] [-Disco 1] [-Firmware UEFI|BIOS]
+    ImagenMaestra.cmd ayuda
+
+(valen también los números: ImagenMaestra.cmd 2)
+Los datos que no se pasen como parámetro se preguntan en la consola.
+Con -Auto no se pregunta nada (es lo que usa la ventana): si falta un
+dato necesario el proceso termina con error. ¡Ojo! desplegar -Auto
+NO pide escribir BORRAR.
+
+
+PASO 1 - Preparar el equipo de referencia (en Windows)
+------------------------------------------------------
+1. Personaliza el equipo (idealmente en modo auditoría: Ctrl+Shift+F3 en la
+   pantalla de región durante la instalación).
+2. Desconecta internet (evita que la Store actualice apps y rompa Sysprep).
+   IDIOMA: la imagen siempre queda en español latinoamericano (es-MX,
+   "Español (México)" en Windows) como ÚNICO idioma. Si el equipo no lo
+   tiene, Preparar lo descarga (esa vez SÍ hace falta internet), lo fija
+   como idioma de pantalla, del sistema, de la bienvenida y de los usuarios
+   nuevos, y pide REINICIAR. En la siguiente ejecución desinstala los demás
+   idiomas (puede pedir otro reinicio). Se conservan el teclado y, si ya es
+   latinoamericano (es-CO, es-MX...), el formato regional.
+   Si no se puede descargar, avisa del error y tú decides: aceptar el idioma
+   actual y seguir (-AceptarIdiomaActual) o terminar sin ejecutar Sysprep.
+3. Ejecuta ImagenMaestra.cmd y elige [1]. Si no lo abriste como
+   administrador, pedirá permisos solo. Opciones:
+     - Quitar apps de la Store que bloquean Sysprep.
+     - Limpieza profunda de componentes (lenta, reduce la imagen).
+     - CopyProfile (copiar el perfil personalizado al usuario por defecto;
+       solo se aplica desde el Administrador integrado del modo auditoría).
+     - Dejar SOLO la cuenta AdministradorCPE (-CuentasCPE): la cuenta local
+       con la que personalizaste el equipo pasa a llamarse AdministradorCPE
+       y conserva su perfil (si es una cuenta Microsoft o el Administrador
+       integrado, se crea una nueva). TODAS las demás cuentas se eliminan
+       con su perfil y sus archivos; la ventana las lista antes de confirmar.
+       Las integradas de Windows (Administrador, Invitado...) siguen
+       deshabilitadas. Una cuenta en uso que no se pueda borrar se borra
+       en el primer arranque de cada equipo desplegado.
+     - Contraseña de AdministradorCPE: la escribes dos veces, o marcas
+       "Sin contraseña" (-SinClave) para dejarla sin contraseña.
+     - Equipos desplegados sin configuración inicial (-OmitirOOBE): al
+       arrancar van directo al inicio de sesión con AdministradorCPE, con el
+       idioma, teclado y zona horaria de este equipo. Si pones tu propio
+       Respuesta\unattend.xml, el despliegue lo usa en su lugar.
+4. El equipo se apagará. NO lo enciendas en Windows.
+
+
+PASO 2 - Capturar (Hiren's en el equipo de referencia)
+------------------------------------------------------
+1. Conecta el disco externo y arranca desde el USB de Hiren's.
+2. Abre el Explorador, entra al disco externo, ejecuta ImagenMaestra.cmd
+   y elige [2].
+3. El script detecta la partición de Windows, pide el nombre y crea
+   Imagenes\<nombre>.wim (índice 1 = Windows). Opcionalmente genera .swm
+   para USB FAT32.
+4. NO SE PIERDE NINGUNA PARTICIÓN: antes de capturar revisa todas las
+   particiones del disco y muestra qué hará con cada una. Las de
+   recuperación (WinRE, recovery del fabricante) y las de datos de
+   programas externos se añaden al mismo .wim como índices PARTICION_1,
+   PARTICION_2... guardando su tipo, atributos, tamaño, espacio usado,
+   sistema de archivos y etiqueta. EFI, MSR y la de arranque BIOS no se
+   capturan porque el despliegue crea unas nuevas. Si alguna partición no
+   se puede capturar (sin formato, cifrada con BitLocker o con un sistema
+   de archivos que Windows no lee), se detiene antes de empezar.
+   Botón "Revisar particiones" para verlo sin capturar (o:
+   ImagenMaestra.cmd particiones -Origen D:). Para omitirlas: casilla
+   desmarcada o -SinExtras.
+
+
+PASO 3 - Desplegar (Hiren's en cada equipo de destino)
+------------------------------------------------------
+1. Arranca el equipo de destino con Hiren's y conecta el disco externo.
+2. Ejecuta ImagenMaestra.cmd y elige [3].
+3. Elige la imagen y el disco de destino. Antes de pedir BORRAR comprueba
+   que la imagen cabe en el disco (ver DISCOS MÁS PEQUEÑOS). Después:
+     - detecta UEFI o BIOS y particiona en consecuencia,
+     - aplica la imagen de Windows,
+     - inyecta los drivers de la carpeta Drivers\ (si hay),
+     - copia Respuesta\unattend.xml (si existe),
+     - crea el arranque con bcdboot,
+     - recrea las particiones de recovery y datos (índices PARTICION_n)
+       después de Windows, con su tipo y atributos, las restaura y
+       registra el entorno de recuperación (WinRE).
+4. Reinicia. Windows arrancará directo al inicio de sesión (o hará la
+   configuración inicial si la imagen se preparó sin omitirla).
+
+
+DISCOS MÁS PEQUEÑOS
+-------------------
+La imagen guarda archivos, no el disco entero, así que se puede desplegar
+en un disco más pequeño que el del equipo de referencia. Al desplegar se
+calcula el espacio necesario:
+  - arranque (EFI/MSR o System),
+  - Windows: lo que ocupa la imagen + 15 % + 10 GB libres,
+  - las particiones de recovery y datos.
+La ventana muestra el "Disco mínimo" de la imagen y en la lista de discos
+indica si cada uno cabe. Si un disco no alcanza con los tamaños
+originales, las particiones de DATOS se reducen hasta lo que ocupan
+(+20 %, mínimo 1 GB) sin perder archivos; las de recuperación no se
+reducen. Si ni así cabe, el despliegue se detiene sin tocar el disco.
+
+
+VERIFICACIÓN (CuentasCPE.cmd)
+-----------------------------
+Se usa en el Windows de cada equipo YA desplegado, directamente desde el
+disco externo. Doble clic en CuentasCPE.cmd (pide permisos de
+administrador solo) y elige [1] Verificación completa. Sin cambiar nada,
+revisa:
+  - que Windows se instaló desde la imagen y sin configuración inicial,
+  - todas las particiones del disco (compáralas con "Revisar particiones"
+    del equipo de referencia) y que WinRE está habilitado,
+  - que el script de primer arranque eliminó las cuentas pendientes,
+  - que solo existe AdministradorCPE y es administradora.
+Guarda un informe en ScriptsEducativos\Logs\Verificacion-<equipo>-<fecha>.txt
+
+
+NOTAS
+-----
+- El despliegue no deja elegir el disco donde está esta carpeta,
+  pero revisa SIEMPRE el número de disco antes de escribir BORRAR.
+- Sysprep se puede ejecutar unas 8 veces sobre la misma instalación.
+  Guarda una copia del equipo de referencia ANTES de Sysprep para poder
+  actualizar la imagen en el futuro.
+- Si Sysprep falla: C:\Windows\System32\Sysprep\Panther\setuperr.log
+- Cada equipo de destino necesita su propia licencia de Windows.
+- Las imágenes capturadas con versiones anteriores pueden traer un índice
+  ADMINISTRACION: ya no se aplica. Vuelve a capturar con esta versión.
+- Si editas ImagenMaestra.cmd, guárdalo con saltos de línea de Windows (CRLF).
+  Al final del archivo están la parte de PowerShell de "preparar", la
+  interfaz gráfica, el script de primer arranque y la parte de particiones,
+  cada una tras su línea marcadora (#==PS1==#, #==GUI==#, #==CPE==# y
+  #==PRT==#); no las borres ni escribas "#==" dentro de ese código.

@@ -1,0 +1,60 @@
+﻿2026-10-16 12:47:23, Info                  DISM   PID=3516 TID=2240 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-16 12:47:23, Info                  DISM   PID=3516 TID=2240 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-16 12:47:23, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-16 12:47:23, Info                  DISM   PID=3516 TID=2240 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-16 12:47:23, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-16 12:47:23, Info                  DISM   DISM Provider Store: PID=3516 TID=2240 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-16 12:47:23, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-16 12:47:23, Info                  DISM   DISM Manager: PID=3516 TID=2240 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: 
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: 
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-16 12:47:23, Info                  DISM   DISM.EXE: Executing command line: "X:\windows\system32\Dism.exe" /Apply-Image /ImageFile:H:\IMG3_V3\Imagenes\Asus_particiones.wim /Index:5 /ApplyDir:Z:\ /CheckIntegrity /LogPath:H:\IMG3_V3\Logs\despliegue_particion5.log
+[3516.2240] [0x80070001] EnableShortnamesOnApplyTarget:(454): Incorrect function.
+[3516.2240] [0x80070001] WIMSetFileShortName:(524): Incorrect function.
+2026-10-16 13:04:21, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-16 13:04:21, Info                  DISM   DISM.EXE: 
+2026-10-16 13:04:21, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-16 13:04:21, Info                  DISM   DISM.EXE: 
+2026-10-17 11:35:11, Info                  DISM   PID=3940 TID=2492 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-17 11:35:11, Info                  DISM   PID=3940 TID=2492 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-17 11:35:11, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-17 11:35:11, Info                  DISM   PID=3940 TID=2492 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-17 11:35:11, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-17 11:35:11, Info                  DISM   DISM Provider Store: PID=3940 TID=2492 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-17 11:35:11, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-17 11:35:11, Info                  DISM   DISM Manager: PID=3940 TID=2492 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: 
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: 
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-17 11:35:11, Info                  DISM   DISM.EXE: Executing command line: "X:\windows\system32\Dism.exe" /Apply-Image /ImageFile:F:\IMG3_V3\Imagenes\ASUS_Particiones_Prueba_2.wim /Index:5 /ApplyDir:D:\ /CheckIntegrity /LogPath:F:\IMG3_V3\Logs\despliegue_particion5.log
+[3940.2492] [0x80070001] EnableShortnamesOnApplyTarget:(454): Incorrect function.
+[3940.2492] [0x80070001] WIMSetFileShortName:(524): Incorrect function.
+2026-10-17 11:53:24, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-17 11:53:24, Info                  DISM   DISM.EXE: 
+2026-10-17 11:53:24, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-17 11:53:24, Info                  DISM   DISM.EXE: 
+2026-10-19 09:33:05, Info                  DISM   PID=2204 TID=3156 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-19 09:33:05, Info                  DISM   PID=2204 TID=3156 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-19 09:33:05, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-19 09:33:05, Info                  DISM   PID=2204 TID=3156 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-19 09:33:05, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-19 09:33:05, Info                  DISM   DISM Provider Store: PID=2204 TID=3156 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-19 09:33:05, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\despliegue_particion5.log
+2026-10-19 09:33:05, Info                  DISM   DISM Manager: PID=2204 TID=3156 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: 
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: 
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-19 09:33:05, Info                  DISM   DISM.EXE: Executing command line: "X:\windows\system32\Dism.exe" /Apply-Image /ImageFile:G:\IMG3_V3\Imagenes\Asus_particiones_3.wim /Index:5 /ApplyDir:D:\ /CheckIntegrity /LogPath:G:\IMG3_V3\Logs\despliegue_particion5.log
+[2204.3156] [0x80070001] EnableShortnamesOnApplyTarget:(454): Incorrect function.
+[2204.3156] [0x80070001] WIMSetFileShortName:(524): Incorrect function.
+2026-10-19 09:53:51, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-19 09:53:51, Info                  DISM   DISM.EXE: 
+2026-10-19 09:53:51, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-19 09:53:51, Info                  DISM   DISM.EXE: 

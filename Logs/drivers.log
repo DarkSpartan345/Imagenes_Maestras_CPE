@@ -1,0 +1,540 @@
+﻿2026-10-07 18:21:23, Info                  DISM   PID=2656 TID=772 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-07 18:21:23, Info                  DISM   PID=2656 TID=772 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   PID=2656 TID=772 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   DISM Provider Store: PID=2656 TID=772 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: 
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: 
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=8
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-07 18:21:23, Info                  DISM   DISM.EXE: Executing command line: dism  /Image:W:\ /Add-Driver /Driver:"D:\ImagenMaestra_3\Drivers" /Recurse /LogPath:"D:\ImagenMaestra_3\Logs\drivers.log"
+2026-10-07 18:21:23, Info                  DISM   DISM FFU Provider: PID=2656 TID=772 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM Imaging Provider: PID=2656 TID=772 The provider FfuManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-07 18:21:23, Info                  DISM   DISM VHD Provider: PID=2656 TID=772 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM Imaging Provider: PID=2656 TID=772 The provider VHDManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+[2656.772] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2656.772] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2656.772] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-07 18:21:23, Info                  DISM   DISM WIM Provider: PID=2656 TID=772 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM Imaging Provider: PID=2656 TID=772 The provider WimManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-07 18:21:23, Info                  DISM   DISM Imaging Provider: PID=2656 TID=772 No imaging provider supported CreateDismImage for this path - CGenericImagingManager::CreateDismImage
+[2656.772] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2656.772] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2656.772] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-07 18:21:23, Info                  DISM   DISM WIM Provider: PID=2656 TID=772 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM FFU Provider: PID=2656 TID=772 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM VHD Provider: PID=2656 TID=772 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 physical location path: W:\ - CDISMManager::CreateImageSession
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Event name for current DISM session is Global\__?_Volume{f8f1046d-db33-45cc-93c0-e06f32219c6b}__4098744305_65536_414620 - CDISMManager::CheckSessionAndLock
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Create session event 0x280 for current DISM session and event name is Global\__?_Volume{f8f1046d-db33-45cc-93c0-e06f32219c6b}__4098744305_65536_414620  - CDISMManager::CheckSessionAndLock
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Copying DISM from "W:\Windows\System32\Dism" - CDISMManager::CreateImageSessionFromLocation
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Successfully loaded the ImageSession at "X:\windows\TEMP\8540B11C-EB35-4D5F-8633-FDC986464960" - CDISMManager::LoadRemoteImageSession
+2026-10-07 18:21:23, Info                  DISM   DISM Image Session: PID=1528 TID=1548 Instantiating the Provider Store. - CDISMImageSession::get_ProviderStore
+2026-10-07 18:21:23, Info                  DISM   DISM OS Provider: PID=1528 TID=1548 Defaulting SystemPath to W:\ - CDISMOSServiceManager::Final_OnConnect
+2026-10-07 18:21:23, Info                  DISM   DISM OS Provider: PID=1528 TID=1548 Defaulting Windows folder to W:\Windows - CDISMOSServiceManager::Final_OnConnect
+2026-10-07 18:21:23, Info                  DISM   DISM Provider Store: PID=1528 TID=1548 Attempting to initialize the logger from the Image Session. - CDISMProviderStore::Final_OnConnect
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   DISM Provider Store: PID=1528 TID=1548 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   Initialized Panther logging at D:\ImagenMaestra_3\Logs\drivers.log
+2026-10-07 18:21:23, Info                  DISM   DISM Manager: PID=2656 TID=772 Image session successfully loaded from location: X:\windows\TEMP\8540B11C-EB35-4D5F-8633-FDC986464960 - CDISMManager::CreateImageSession
+2026-10-07 18:21:23, Info                  DISM   DISM OS Provider: PID=1528 TID=1548 Setting SystemPath to W:\ - CDISMOSServiceManager::SetSystemPath
+2026-10-07 18:21:24, Info                  DISM   DISM.EXE: Target image information: OS Version=10.0.26200.9457, Image architecture=amd64
+2026-10-07 18:21:24, Info                  DISM   DISM.EXE: Image session version: 10.0.26100.9278
+2026-10-07 18:21:24, Info                  DISM   DISM Transmog Provider: PID=1528 TID=1548 Current image session is [OFFLINE] - CTransmogManager::GetMode
+2026-10-07 18:21:24, Info                  DISM   DISM OS Provider: PID=1528 TID=1548 Determined System directory to be W:\Windows\System32 - CDISMOSServiceManager::get_SystemDirectory
+2026-10-07 18:21:24, Info                  DISM   DISM Transmog Provider: PID=1528 TID=1548 Determined WinDir path = [W:\Windows] - CTransmogManager::GetWinDirPath
+2026-10-07 18:21:24, Info                  DISM   DISM Transmog Provider: PID=1528 TID=1548 GetProductType: ProductType = [WinNT] - CTransmogManager::GetProductType
+2026-10-07 18:21:24, Info                  DISM   DISM Transmog Provider: PID=1528 TID=1548 Product Type: [WinNT] - CTransmogManager::Initialize
+2026-10-07 18:21:24, Info                  DISM   DISM Transmog Provider: PID=1528 TID=1548 Product Type ServerNT : [No] - CTransmogManager::Initialize
+2026-10-07 18:21:24, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-07 18:21:25, Info                  DISM   DISM Driver Manager: PID=1528 TID=1548 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::Initialize
+2026-10-07 18:21:25, Info                  DISM   DISM Package Manager: PID=1528 TID=1548 Finished initializing the CbsConUI Handler. - CCbsConUIHandler::Initialize
+2026-10-07 18:21:25, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-07 18:21:25, Info                  CBS    Universal Time is: 2026-10-07 18:21:25.135
+2026-10-07 18:21:25, Info                  CBS    Offline servicing, skipping online catalog installation
+2026-10-07 18:21:25, Info                  CBS    Offline servicing, using stack version from: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-07 18:21:25, Info                  CBS    Loaded Servicing Stack v10.0.26100.9441 with Core: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-07 18:21:25, Info                  CBS    Setting core mode: CbsCoreModeOffline
+2026-10-07 18:21:25, Info                  CSI    00000001@2026/10/7:18:21:25.151 WcpInitialize: wcp.dll version 10.0.26100.9441 (WinBuild.160101.0800)
+2026-10-07 18:21:25, Info                  CBS    TurboContainer load Successful
+2026-10-07 18:21:25, Info                  CBS    Lock: New lock added: CCbsSessionManager, level: 11, total lock:9
+2026-10-07 18:21:25, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-07 18:21:25, Info                  DISM   DISM Package Manager: PID=1528 TID=1548 Loaded servicing stack for offline use only. - CDISMPackageManager::CreateCbsSession
+2026-10-07 18:21:25, Info                  CBS    Lazy store initialization mode
+2026-10-07 18:21:25, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-07 18:21:25, Error                 DISM   DISM Driver Manager: PID=1528 TID=1548 No valid INF files found on the path 'D:\ImagenMaestra_3\Drivers'. - CDriverManager::OpenPackageByFolder(hr:0x80070002)
+2026-10-07 18:21:25, Warning               DISM   DISM Driver Manager: PID=1528 TID=1548 Errors were found opening driver packages on the path D:\ImagenMaestra_3\Drivers. - CDriverManager::Internal_DoAddDriverPackage
+2026-10-07 18:21:25, Error                 DISM   DISM Driver Manager: PID=1528 TID=1548 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:1088 - CDriverManager::Internal_DoAddDriverPackage(hr:0x80070002)
+2026-10-07 18:21:25, Error                 DISM   DISM Driver Manager: PID=1528 TID=1548 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:537 - CDriverManager::ExecuteCmdLine(hr:0x80070002)
+2026-10-07 18:21:25, Info                  DISM   DISM Driver Manager: PID=1528 TID=1548 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::ExecuteCmdLine
+2026-10-07 18:21:25, Info                  DISM   DISM Package Manager: PID=1528 TID=1548 Finalizing CBS core. - CDISMPackageManager::Finalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: ExecutionEngineFinalize
+2026-10-07 18:21:25, Info                  CBS    Execution Engine Finalize
+2026-10-07 18:21:25, Info                  CBS    Execution Engine Finalize
+2026-10-07 18:21:25, Info                  CBS    Execution Engine Finalize
+2026-10-07 18:21:25, Info                  CBS    Execution Engine Finalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: ComponentAnalyzerFinalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: PackageTrackerFinalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CoreResourcesUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: SessionManagerFinalize
+2026-10-07 18:21:25, Info                  CBS    Lock: Lock removed: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-07 18:21:25, Info                  CBS    Lock: Lock removed: CCbsSessionManager, level: 11, total lock:9
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CapabilityManagerFinalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: GetPublicObjectMonitor::Audit
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: PublicObjectMonitorFinalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: Enter vCoreInitializeLock
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: WcpUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: DrupUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: DpxUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: SrUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: TurboStackUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: TurboContainerUnload
+2026-10-07 18:21:25, Info                  CBS    TurboContainer unload Successful
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CbsEsdUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CbsOneSettingsFinalize
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: CbsEventUnregister
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: AppContainerUnload
+2026-10-07 18:21:25, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.
+2026-10-07 18:21:25, Info                  DISM   DISM Manager: PID=2656 TID=772 Closing session event handle 0x280 - CDISMManager::CleanupImageSessionEntry
+2026-10-07 18:21:25, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-07 18:21:25, Info                  DISM   DISM.EXE: 
+2026-10-07 18:21:25, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-07 18:21:25, Info                  DISM   DISM.EXE: 
+2026-10-11 03:43:33, Info                  DISM   PID=2164 TID=3220 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-11 03:43:33, Info                  DISM   PID=2164 TID=3220 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   PID=2164 TID=3220 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   DISM Provider Store: PID=2164 TID=3220 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: 
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: 
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: Executing command line: dism  /Image:W:\ /Add-Driver /Driver:"F:\ImagenMaestra_3\Drivers" /Recurse /LogPath:"F:\ImagenMaestra_3\Logs\drivers.log"
+2026-10-11 03:43:33, Info                  DISM   DISM FFU Provider: PID=2164 TID=3220 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM Imaging Provider: PID=2164 TID=3220 The provider FfuManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-11 03:43:33, Info                  DISM   DISM VHD Provider: PID=2164 TID=3220 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM Imaging Provider: PID=2164 TID=3220 The provider VHDManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+[2164.3220] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2164.3220] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2164.3220] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-11 03:43:33, Info                  DISM   DISM WIM Provider: PID=2164 TID=3220 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM Imaging Provider: PID=2164 TID=3220 The provider WimManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-11 03:43:33, Info                  DISM   DISM Imaging Provider: PID=2164 TID=3220 No imaging provider supported CreateDismImage for this path - CGenericImagingManager::CreateDismImage
+[2164.3220] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2164.3220] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2164.3220] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-11 03:43:33, Info                  DISM   DISM WIM Provider: PID=2164 TID=3220 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM FFU Provider: PID=2164 TID=3220 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM VHD Provider: PID=2164 TID=3220 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 physical location path: W:\ - CDISMManager::CreateImageSession
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Event name for current DISM session is Global\__?_Volume{9e049479-3075-4678-b2ca-da7396dc4636}__751242598_65536_314235 - CDISMManager::CheckSessionAndLock
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Create session event 0x270 for current DISM session and event name is Global\__?_Volume{9e049479-3075-4678-b2ca-da7396dc4636}__751242598_65536_314235  - CDISMManager::CheckSessionAndLock
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Copying DISM from "W:\Windows\System32\Dism" - CDISMManager::CreateImageSessionFromLocation
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Successfully loaded the ImageSession at "X:\windows\TEMP\4D9E26E0-A575-4B6C-A59B-828363C754F6" - CDISMManager::LoadRemoteImageSession
+2026-10-11 03:43:33, Info                  DISM   DISM Image Session: PID=3448 TID=1928 Instantiating the Provider Store. - CDISMImageSession::get_ProviderStore
+2026-10-11 03:43:33, Info                  DISM   DISM OS Provider: PID=3448 TID=1928 Defaulting SystemPath to W:\ - CDISMOSServiceManager::Final_OnConnect
+2026-10-11 03:43:33, Info                  DISM   DISM OS Provider: PID=3448 TID=1928 Defaulting Windows folder to W:\Windows - CDISMOSServiceManager::Final_OnConnect
+2026-10-11 03:43:33, Info                  DISM   DISM Provider Store: PID=3448 TID=1928 Attempting to initialize the logger from the Image Session. - CDISMProviderStore::Final_OnConnect
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   DISM Provider Store: PID=3448 TID=1928 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   Initialized Panther logging at F:\ImagenMaestra_3\Logs\drivers.log
+2026-10-11 03:43:33, Info                  DISM   DISM Manager: PID=2164 TID=3220 Image session successfully loaded from location: X:\windows\TEMP\4D9E26E0-A575-4B6C-A59B-828363C754F6 - CDISMManager::CreateImageSession
+2026-10-11 03:43:33, Info                  DISM   DISM OS Provider: PID=3448 TID=1928 Setting SystemPath to W:\ - CDISMOSServiceManager::SetSystemPath
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: Target image information: OS Version=10.0.26200.9457, Image architecture=amd64
+2026-10-11 03:43:33, Info                  DISM   DISM.EXE: Image session version: 10.0.26100.9278
+2026-10-11 03:43:33, Info                  DISM   DISM Transmog Provider: PID=3448 TID=1928 Current image session is [OFFLINE] - CTransmogManager::GetMode
+2026-10-11 03:43:33, Info                  DISM   DISM OS Provider: PID=3448 TID=1928 Determined System directory to be W:\Windows\System32 - CDISMOSServiceManager::get_SystemDirectory
+2026-10-11 03:43:33, Info                  DISM   DISM Transmog Provider: PID=3448 TID=1928 Determined WinDir path = [W:\Windows] - CTransmogManager::GetWinDirPath
+2026-10-11 03:43:34, Info                  DISM   DISM Transmog Provider: PID=3448 TID=1928 GetProductType: ProductType = [WinNT] - CTransmogManager::GetProductType
+2026-10-11 03:43:34, Info                  DISM   DISM Transmog Provider: PID=3448 TID=1928 Product Type: [WinNT] - CTransmogManager::Initialize
+2026-10-11 03:43:34, Info                  DISM   DISM Transmog Provider: PID=3448 TID=1928 Product Type ServerNT : [No] - CTransmogManager::Initialize
+2026-10-11 03:43:34, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-11 03:43:34, Info                  DISM   DISM Driver Manager: PID=3448 TID=1928 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::Initialize
+2026-10-11 03:43:34, Info                  DISM   DISM Package Manager: PID=3448 TID=1928 Finished initializing the CbsConUI Handler. - CCbsConUIHandler::Initialize
+2026-10-11 03:43:34, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-11 03:43:34, Info                  CBS    Universal Time is: 2026-10-11 03:43:34.750
+2026-10-11 03:43:34, Info                  CBS    Offline servicing, skipping online catalog installation
+2026-10-11 03:43:34, Info                  CBS    Offline servicing, using stack version from: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-11 03:43:34, Info                  CBS    Loaded Servicing Stack v10.0.26100.9441 with Core: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-11 03:43:34, Info                  CBS    Setting core mode: CbsCoreModeOffline
+2026-10-11 03:43:34, Info                  CSI    00000001@2026/10/11:03:43:34.766 WcpInitialize: wcp.dll version 10.0.26100.9441 (WinBuild.160101.0800)
+2026-10-11 03:43:34, Info                  CBS    TurboContainer load Successful
+2026-10-11 03:43:34, Info                  CBS    Lock: New lock added: CCbsSessionManager, level: 11, total lock:9
+2026-10-11 03:43:34, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-11 03:43:34, Info                  DISM   DISM Package Manager: PID=3448 TID=1928 Loaded servicing stack for offline use only. - CDISMPackageManager::CreateCbsSession
+2026-10-11 03:43:34, Info                  CBS    Lazy store initialization mode
+2026-10-11 03:43:34, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-11 03:43:34, Error                 DISM   DISM Driver Manager: PID=3448 TID=1928 No valid INF files found on the path 'F:\ImagenMaestra_3\Drivers'. - CDriverManager::OpenPackageByFolder(hr:0x80070002)
+2026-10-11 03:43:34, Warning               DISM   DISM Driver Manager: PID=3448 TID=1928 Errors were found opening driver packages on the path F:\ImagenMaestra_3\Drivers. - CDriverManager::Internal_DoAddDriverPackage
+2026-10-11 03:43:34, Error                 DISM   DISM Driver Manager: PID=3448 TID=1928 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:1088 - CDriverManager::Internal_DoAddDriverPackage(hr:0x80070002)
+2026-10-11 03:43:34, Error                 DISM   DISM Driver Manager: PID=3448 TID=1928 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:537 - CDriverManager::ExecuteCmdLine(hr:0x80070002)
+2026-10-11 03:43:34, Info                  DISM   DISM Driver Manager: PID=3448 TID=1928 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::ExecuteCmdLine
+2026-10-11 03:43:34, Info                  DISM   DISM Package Manager: PID=3448 TID=1928 Finalizing CBS core. - CDISMPackageManager::Finalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: ExecutionEngineFinalize
+2026-10-11 03:43:34, Info                  CBS    Execution Engine Finalize
+2026-10-11 03:43:34, Info                  CBS    Execution Engine Finalize
+2026-10-11 03:43:34, Info                  CBS    Execution Engine Finalize
+2026-10-11 03:43:34, Info                  CBS    Execution Engine Finalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: ComponentAnalyzerFinalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: PackageTrackerFinalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CoreResourcesUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: SessionManagerFinalize
+2026-10-11 03:43:34, Info                  CBS    Lock: Lock removed: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-11 03:43:34, Info                  CBS    Lock: Lock removed: CCbsSessionManager, level: 11, total lock:9
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CapabilityManagerFinalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: GetPublicObjectMonitor::Audit
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: PublicObjectMonitorFinalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: Enter vCoreInitializeLock
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: WcpUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: DrupUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: DpxUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: SrUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: TurboStackUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: TurboContainerUnload
+2026-10-11 03:43:34, Info                  CBS    TurboContainer unload Successful
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CbsEsdUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CbsOneSettingsFinalize
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: CbsEventUnregister
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: AppContainerUnload
+2026-10-11 03:43:34, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.
+2026-10-11 03:43:34, Info                  DISM   DISM Manager: PID=2164 TID=3220 Closing session event handle 0x270 - CDISMManager::CleanupImageSessionEntry
+2026-10-11 03:43:34, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-11 03:43:34, Info                  DISM   DISM.EXE: 
+2026-10-11 03:43:34, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-11 03:43:34, Info                  DISM   DISM.EXE: 
+2026-10-16 11:38:07, Info                  DISM   PID=3344 TID=3608 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-16 11:38:07, Info                  DISM   PID=3344 TID=3608 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   PID=3344 TID=3608 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   DISM Provider Store: PID=3344 TID=3608 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: 
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: 
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-16 11:38:07, Info                  DISM   DISM.EXE: Executing command line: dism  /Image:W:\ /Add-Driver /Driver:"H:\IMG3_V3\Drivers" /Recurse /LogPath:"H:\IMG3_V3\Logs\drivers.log"
+2026-10-16 11:38:07, Info                  DISM   DISM FFU Provider: PID=3344 TID=3608 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM Imaging Provider: PID=3344 TID=3608 The provider FfuManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-16 11:38:07, Info                  DISM   DISM VHD Provider: PID=3344 TID=3608 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM Imaging Provider: PID=3344 TID=3608 The provider VHDManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+[3344.3608] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[3344.3608] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[3344.3608] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-16 11:38:07, Info                  DISM   DISM WIM Provider: PID=3344 TID=3608 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM Imaging Provider: PID=3344 TID=3608 The provider WimManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-16 11:38:07, Info                  DISM   DISM Imaging Provider: PID=3344 TID=3608 No imaging provider supported CreateDismImage for this path - CGenericImagingManager::CreateDismImage
+[3344.3608] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[3344.3608] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[3344.3608] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-16 11:38:07, Info                  DISM   DISM WIM Provider: PID=3344 TID=3608 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM FFU Provider: PID=3344 TID=3608 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM VHD Provider: PID=3344 TID=3608 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 physical location path: W:\ - CDISMManager::CreateImageSession
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Event name for current DISM session is Global\__?_Volume{12cce70e-3a7a-4b86-8c67-e97653af1af6}__620558472_65536_306060 - CDISMManager::CheckSessionAndLock
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Create session event 0x270 for current DISM session and event name is Global\__?_Volume{12cce70e-3a7a-4b86-8c67-e97653af1af6}__620558472_65536_306060  - CDISMManager::CheckSessionAndLock
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Copying DISM from "W:\Windows\System32\Dism" - CDISMManager::CreateImageSessionFromLocation
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Successfully loaded the ImageSession at "X:\windows\TEMP\38AFB367-94CF-416A-BE6A-C32135252837" - CDISMManager::LoadRemoteImageSession
+2026-10-16 11:38:07, Info                  DISM   DISM Image Session: PID=2608 TID=1004 Instantiating the Provider Store. - CDISMImageSession::get_ProviderStore
+2026-10-16 11:38:07, Info                  DISM   DISM OS Provider: PID=2608 TID=1004 Defaulting SystemPath to W:\ - CDISMOSServiceManager::Final_OnConnect
+2026-10-16 11:38:07, Info                  DISM   DISM OS Provider: PID=2608 TID=1004 Defaulting Windows folder to W:\Windows - CDISMOSServiceManager::Final_OnConnect
+2026-10-16 11:38:07, Info                  DISM   DISM Provider Store: PID=2608 TID=1004 Attempting to initialize the logger from the Image Session. - CDISMProviderStore::Final_OnConnect
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   DISM Provider Store: PID=2608 TID=1004 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   Initialized Panther logging at H:\IMG3_V3\Logs\drivers.log
+2026-10-16 11:38:07, Info                  DISM   DISM Manager: PID=3344 TID=3608 Image session successfully loaded from location: X:\windows\TEMP\38AFB367-94CF-416A-BE6A-C32135252837 - CDISMManager::CreateImageSession
+2026-10-16 11:38:07, Info                  DISM   DISM OS Provider: PID=2608 TID=1004 Setting SystemPath to W:\ - CDISMOSServiceManager::SetSystemPath
+2026-10-16 11:38:08, Info                  DISM   DISM.EXE: Target image information: OS Version=10.0.26200.9457, Image architecture=amd64
+2026-10-16 11:38:08, Info                  DISM   DISM.EXE: Image session version: 10.0.26100.9278
+2026-10-16 11:38:08, Info                  DISM   DISM Transmog Provider: PID=2608 TID=1004 Current image session is [OFFLINE] - CTransmogManager::GetMode
+2026-10-16 11:38:08, Info                  DISM   DISM OS Provider: PID=2608 TID=1004 Determined System directory to be W:\Windows\System32 - CDISMOSServiceManager::get_SystemDirectory
+2026-10-16 11:38:08, Info                  DISM   DISM Transmog Provider: PID=2608 TID=1004 Determined WinDir path = [W:\Windows] - CTransmogManager::GetWinDirPath
+2026-10-16 11:38:08, Info                  DISM   DISM Transmog Provider: PID=2608 TID=1004 GetProductType: ProductType = [WinNT] - CTransmogManager::GetProductType
+2026-10-16 11:38:08, Info                  DISM   DISM Transmog Provider: PID=2608 TID=1004 Product Type: [WinNT] - CTransmogManager::Initialize
+2026-10-16 11:38:08, Info                  DISM   DISM Transmog Provider: PID=2608 TID=1004 Product Type ServerNT : [No] - CTransmogManager::Initialize
+2026-10-16 11:38:08, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-16 11:38:08, Info                  DISM   DISM Driver Manager: PID=2608 TID=1004 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::Initialize
+2026-10-16 11:38:08, Info                  DISM   DISM Package Manager: PID=2608 TID=1004 Finished initializing the CbsConUI Handler. - CCbsConUIHandler::Initialize
+2026-10-16 11:38:08, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-16 11:38:08, Info                  CBS    Universal Time is: 2026-10-16 11:38:08.903
+2026-10-16 11:38:08, Info                  CBS    Offline servicing, skipping online catalog installation
+2026-10-16 11:38:08, Info                  CBS    Offline servicing, using stack version from: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-16 11:38:08, Info                  CBS    Loaded Servicing Stack v10.0.26100.9441 with Core: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-16 11:38:08, Info                  CBS    Setting core mode: CbsCoreModeOffline
+2026-10-16 11:38:08, Info                  CSI    00000001@2026/10/16:11:38:08.919 WcpInitialize: wcp.dll version 10.0.26100.9441 (WinBuild.160101.0800)
+2026-10-16 11:38:08, Info                  CBS    TurboContainer load Successful
+2026-10-16 11:38:08, Info                  CBS    Lock: New lock added: CCbsSessionManager, level: 11, total lock:9
+2026-10-16 11:38:08, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-16 11:38:08, Info                  DISM   DISM Package Manager: PID=2608 TID=1004 Loaded servicing stack for offline use only. - CDISMPackageManager::CreateCbsSession
+2026-10-16 11:38:08, Info                  CBS    Lazy store initialization mode
+2026-10-16 11:38:08, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-16 11:38:08, Error                 DISM   DISM Driver Manager: PID=2608 TID=1004 No valid INF files found on the path 'H:\IMG3_V3\Drivers'. - CDriverManager::OpenPackageByFolder(hr:0x80070002)
+2026-10-16 11:38:08, Warning               DISM   DISM Driver Manager: PID=2608 TID=1004 Errors were found opening driver packages on the path H:\IMG3_V3\Drivers. - CDriverManager::Internal_DoAddDriverPackage
+2026-10-16 11:38:08, Error                 DISM   DISM Driver Manager: PID=2608 TID=1004 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:1088 - CDriverManager::Internal_DoAddDriverPackage(hr:0x80070002)
+2026-10-16 11:38:08, Error                 DISM   DISM Driver Manager: PID=2608 TID=1004 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:537 - CDriverManager::ExecuteCmdLine(hr:0x80070002)
+2026-10-16 11:38:08, Info                  DISM   DISM Driver Manager: PID=2608 TID=1004 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::ExecuteCmdLine
+2026-10-16 11:38:08, Info                  DISM   DISM Package Manager: PID=2608 TID=1004 Finalizing CBS core. - CDISMPackageManager::Finalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: ExecutionEngineFinalize
+2026-10-16 11:38:08, Info                  CBS    Execution Engine Finalize
+2026-10-16 11:38:08, Info                  CBS    Execution Engine Finalize
+2026-10-16 11:38:08, Info                  CBS    Execution Engine Finalize
+2026-10-16 11:38:08, Info                  CBS    Execution Engine Finalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: ComponentAnalyzerFinalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: PackageTrackerFinalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CoreResourcesUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: SessionManagerFinalize
+2026-10-16 11:38:08, Info                  CBS    Lock: Lock removed: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-16 11:38:08, Info                  CBS    Lock: Lock removed: CCbsSessionManager, level: 11, total lock:9
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CapabilityManagerFinalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: GetPublicObjectMonitor::Audit
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: PublicObjectMonitorFinalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: Enter vCoreInitializeLock
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: WcpUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: DrupUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: DpxUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: SrUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: TurboStackUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: TurboContainerUnload
+2026-10-16 11:38:08, Info                  CBS    TurboContainer unload Successful
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CbsEsdUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CbsOneSettingsFinalize
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: CbsEventUnregister
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: AppContainerUnload
+2026-10-16 11:38:08, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.
+2026-10-16 11:38:08, Info                  DISM   DISM Manager: PID=3344 TID=3608 Closing session event handle 0x270 - CDISMManager::CleanupImageSessionEntry
+2026-10-16 11:38:09, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-16 11:38:09, Info                  DISM   DISM.EXE: 
+2026-10-16 11:38:09, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-16 11:38:09, Info                  DISM   DISM.EXE: 
+2026-10-17 10:21:27, Info                  DISM   PID=2468 TID=3768 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-17 10:21:27, Info                  DISM   PID=2468 TID=3768 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-17 10:21:27, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:27, Info                  DISM   PID=2468 TID=3768 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-17 10:21:27, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:27, Info                  DISM   DISM Provider Store: PID=2468 TID=3768 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-17 10:21:27, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:27, Info                  DISM   DISM Manager: PID=2468 TID=3768 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: 
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: 
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-17 10:21:27, Info                  DISM   DISM.EXE: Executing command line: dism  /Image:W:\ /Add-Driver /Driver:"F:\IMG3_V3\Drivers" /Recurse /LogPath:"F:\IMG3_V3\Logs\drivers.log"
+2026-10-17 10:21:27, Info                  DISM   DISM FFU Provider: PID=2468 TID=3768 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM Imaging Provider: PID=2468 TID=3768 The provider FfuManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-17 10:21:27, Info                  DISM   DISM VHD Provider: PID=2468 TID=3768 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM Imaging Provider: PID=2468 TID=3768 The provider VHDManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+[2468.3768] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2468.3768] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2468.3768] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-17 10:21:27, Info                  DISM   DISM WIM Provider: PID=2468 TID=3768 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM Imaging Provider: PID=2468 TID=3768 The provider WimManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-17 10:21:27, Info                  DISM   DISM Imaging Provider: PID=2468 TID=3768 No imaging provider supported CreateDismImage for this path - CGenericImagingManager::CreateDismImage
+[2468.3768] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[2468.3768] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[2468.3768] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-17 10:21:27, Info                  DISM   DISM WIM Provider: PID=2468 TID=3768 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM FFU Provider: PID=2468 TID=3768 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM VHD Provider: PID=2468 TID=3768 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-17 10:21:27, Info                  DISM   DISM Manager: PID=2468 TID=3768 physical location path: W:\ - CDISMManager::CreateImageSession
+2026-10-17 10:21:27, Info                  DISM   DISM Manager: PID=2468 TID=3768 Event name for current DISM session is Global\__?_Volume{d93c520a-f524-406e-ad46-28bb9260c6d7}__1110926355_65536_298571 - CDISMManager::CheckSessionAndLock
+2026-10-17 10:21:27, Info                  DISM   DISM Manager: PID=2468 TID=3768 Create session event 0x270 for current DISM session and event name is Global\__?_Volume{d93c520a-f524-406e-ad46-28bb9260c6d7}__1110926355_65536_298571  - CDISMManager::CheckSessionAndLock
+2026-10-17 10:21:27, Info                  DISM   DISM Manager: PID=2468 TID=3768 Copying DISM from "W:\Windows\System32\Dism" - CDISMManager::CreateImageSessionFromLocation
+2026-10-17 10:21:28, Info                  DISM   DISM Manager: PID=2468 TID=3768 Successfully loaded the ImageSession at "X:\windows\TEMP\321C3B1B-411A-4289-B738-9B937FB839F8" - CDISMManager::LoadRemoteImageSession
+2026-10-17 10:21:28, Info                  DISM   DISM Image Session: PID=3404 TID=3788 Instantiating the Provider Store. - CDISMImageSession::get_ProviderStore
+2026-10-17 10:21:28, Info                  DISM   DISM OS Provider: PID=3404 TID=3788 Defaulting SystemPath to W:\ - CDISMOSServiceManager::Final_OnConnect
+2026-10-17 10:21:28, Info                  DISM   DISM OS Provider: PID=3404 TID=3788 Defaulting Windows folder to W:\Windows - CDISMOSServiceManager::Final_OnConnect
+2026-10-17 10:21:28, Info                  DISM   DISM Provider Store: PID=3404 TID=3788 Attempting to initialize the logger from the Image Session. - CDISMProviderStore::Final_OnConnect
+2026-10-17 10:21:28, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:28, Info                  DISM   DISM Provider Store: PID=3404 TID=3788 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-17 10:21:28, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:28, Info                  DISM   Initialized Panther logging at F:\IMG3_V3\Logs\drivers.log
+2026-10-17 10:21:28, Info                  DISM   DISM Manager: PID=2468 TID=3768 Image session successfully loaded from location: X:\windows\TEMP\321C3B1B-411A-4289-B738-9B937FB839F8 - CDISMManager::CreateImageSession
+2026-10-17 10:21:28, Info                  DISM   DISM OS Provider: PID=3404 TID=3788 Setting SystemPath to W:\ - CDISMOSServiceManager::SetSystemPath
+2026-10-17 10:21:28, Info                  DISM   DISM.EXE: Target image information: OS Version=10.0.26200.9457, Image architecture=amd64
+2026-10-17 10:21:28, Info                  DISM   DISM.EXE: Image session version: 10.0.26100.9278
+2026-10-17 10:21:28, Info                  DISM   DISM Transmog Provider: PID=3404 TID=3788 Current image session is [OFFLINE] - CTransmogManager::GetMode
+2026-10-17 10:21:28, Info                  DISM   DISM OS Provider: PID=3404 TID=3788 Determined System directory to be W:\Windows\System32 - CDISMOSServiceManager::get_SystemDirectory
+2026-10-17 10:21:28, Info                  DISM   DISM Transmog Provider: PID=3404 TID=3788 Determined WinDir path = [W:\Windows] - CTransmogManager::GetWinDirPath
+2026-10-17 10:21:28, Info                  DISM   DISM Transmog Provider: PID=3404 TID=3788 GetProductType: ProductType = [WinNT] - CTransmogManager::GetProductType
+2026-10-17 10:21:28, Info                  DISM   DISM Transmog Provider: PID=3404 TID=3788 Product Type: [WinNT] - CTransmogManager::Initialize
+2026-10-17 10:21:28, Info                  DISM   DISM Transmog Provider: PID=3404 TID=3788 Product Type ServerNT : [No] - CTransmogManager::Initialize
+2026-10-17 10:21:28, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-17 10:21:29, Info                  DISM   DISM Driver Manager: PID=3404 TID=3788 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::Initialize
+2026-10-17 10:21:29, Info                  DISM   DISM Package Manager: PID=3404 TID=3788 Finished initializing the CbsConUI Handler. - CCbsConUIHandler::Initialize
+2026-10-17 10:21:29, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-17 10:21:29, Info                  CBS    Universal Time is: 2026-10-17 10:21:29.205
+2026-10-17 10:21:29, Info                  CBS    Offline servicing, skipping online catalog installation
+2026-10-17 10:21:29, Info                  CBS    Offline servicing, using stack version from: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-17 10:21:29, Info                  CBS    Loaded Servicing Stack v10.0.26100.9441 with Core: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\cbscore.dll
+2026-10-17 10:21:29, Info                  CBS    Setting core mode: CbsCoreModeOffline
+2026-10-17 10:21:29, Info                  CSI    00000001@2026/10/17:10:21:29.205 WcpInitialize: wcp.dll version 10.0.26100.9441 (WinBuild.160101.0800)
+2026-10-17 10:21:29, Info                  CBS    TurboContainer load Successful
+2026-10-17 10:21:29, Info                  CBS    Lock: New lock added: CCbsSessionManager, level: 11, total lock:9
+2026-10-17 10:21:29, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-17 10:21:29, Info                  DISM   DISM Package Manager: PID=3404 TID=3788 Loaded servicing stack for offline use only. - CDISMPackageManager::CreateCbsSession
+2026-10-17 10:21:29, Info                  CBS    Lazy store initialization mode
+2026-10-17 10:21:29, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9441_none_a5253a19774da03c\wcp.dll' : got STATUS_SUCCESS
+2026-10-17 10:21:29, Error                 DISM   DISM Driver Manager: PID=3404 TID=3788 No valid INF files found on the path 'F:\IMG3_V3\Drivers'. - CDriverManager::OpenPackageByFolder(hr:0x80070002)
+2026-10-17 10:21:29, Warning               DISM   DISM Driver Manager: PID=3404 TID=3788 Errors were found opening driver packages on the path F:\IMG3_V3\Drivers. - CDriverManager::Internal_DoAddDriverPackage
+2026-10-17 10:21:29, Error                 DISM   DISM Driver Manager: PID=3404 TID=3788 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:1088 - CDriverManager::Internal_DoAddDriverPackage(hr:0x80070002)
+2026-10-17 10:21:29, Error                 DISM   DISM Driver Manager: PID=3404 TID=3788 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:537 - CDriverManager::ExecuteCmdLine(hr:0x80070002)
+2026-10-17 10:21:29, Info                  DISM   DISM Driver Manager: PID=3404 TID=3788 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::ExecuteCmdLine
+2026-10-17 10:21:29, Info                  DISM   DISM Package Manager: PID=3404 TID=3788 Finalizing CBS core. - CDISMPackageManager::Finalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: ExecutionEngineFinalize
+2026-10-17 10:21:29, Info                  CBS    Execution Engine Finalize
+2026-10-17 10:21:29, Info                  CBS    Execution Engine Finalize
+2026-10-17 10:21:29, Info                  CBS    Execution Engine Finalize
+2026-10-17 10:21:29, Info                  CBS    Execution Engine Finalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: ComponentAnalyzerFinalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: PackageTrackerFinalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CoreResourcesUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: SessionManagerFinalize
+2026-10-17 10:21:29, Info                  CBS    Lock: Lock removed: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-17 10:21:29, Info                  CBS    Lock: Lock removed: CCbsSessionManager, level: 11, total lock:9
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CapabilityManagerFinalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: GetPublicObjectMonitor::Audit
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: PublicObjectMonitorFinalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: Enter vCoreInitializeLock
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: WcpUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: DrupUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: DpxUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: SrUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: TurboStackUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: TurboContainerUnload
+2026-10-17 10:21:29, Info                  CBS    TurboContainer unload Successful
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CbsEsdUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CbsOneSettingsFinalize
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: CbsEventUnregister
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: AppContainerUnload
+2026-10-17 10:21:29, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.
+2026-10-17 10:21:29, Info                  DISM   DISM Manager: PID=2468 TID=3768 Closing session event handle 0x270 - CDISMManager::CleanupImageSessionEntry
+2026-10-17 10:21:29, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-17 10:21:29, Info                  DISM   DISM.EXE: 
+2026-10-17 10:21:29, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-17 10:21:29, Info                  DISM   DISM.EXE: 
+2026-10-19 08:10:52, Info                  DISM   PID=1780 TID=4000 Scratch directory set to 'X:\windows\TEMP\'. - CDISMManager::put_ScratchDir
+2026-10-19 08:10:52, Info                  DISM   PID=1780 TID=4000 DismCore.dll version: 10.0.22621.1 - CDISMManager::FinalConstruct
+2026-10-19 08:10:52, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:52, Info                  DISM   PID=1780 TID=4000 Successfully loaded the ImageSession at "X:\windows\system32\Dism" - CDISMManager::LoadLocalImageSession
+2026-10-19 08:10:52, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:52, Info                  DISM   DISM Provider Store: PID=1780 TID=4000 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-19 08:10:52, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:52, Info                  DISM   DISM Manager: PID=1780 TID=4000 Successfully created the local image session and provider store. - CDISMManager::CreateLocalImageSession
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: 
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: <----- Starting Dism.exe session ----->
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: 
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: Host machine information: OS Version=10.0.22621, Running architecture=amd64, Number of processors=12
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: Dism.exe version: 10.0.22621.1
+2026-10-19 08:10:52, Info                  DISM   DISM.EXE: Executing command line: dism  /Image:W:\ /Add-Driver /Driver:"G:\IMG3_V3\Drivers" /Recurse /LogPath:"G:\IMG3_V3\Logs\drivers.log"
+2026-10-19 08:10:52, Info                  DISM   DISM FFU Provider: PID=1780 TID=4000 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM Imaging Provider: PID=1780 TID=4000 The provider FfuManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-19 08:10:52, Info                  DISM   DISM VHD Provider: PID=1780 TID=4000 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM Imaging Provider: PID=1780 TID=4000 The provider VHDManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+[1780.4000] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[1780.4000] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[1780.4000] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-19 08:10:52, Info                  DISM   DISM WIM Provider: PID=1780 TID=4000 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM Imaging Provider: PID=1780 TID=4000 The provider WimManager does not support CreateDismImage on W:\ - CGenericImagingManager::CreateDismImage
+2026-10-19 08:10:52, Info                  DISM   DISM Imaging Provider: PID=1780 TID=4000 No imaging provider supported CreateDismImage for this path - CGenericImagingManager::CreateDismImage
+[1780.4000] [0x80070002] FIOReadFileIntoBuffer:(1456): The system cannot find the file specified.
+[1780.4000] [0xc142011c] UnmarshallImageHandleFromDirectory:(641)
+[1780.4000] [0xc142011c] WIMGetMountedImageHandle:(2910)
+2026-10-19 08:10:52, Info                  DISM   DISM WIM Provider: PID=1780 TID=4000 [W:\] is not a WIM mount point. - CWimMountedImageInfo::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM FFU Provider: PID=1780 TID=4000 [W:\] is not recognized by the DISM FFU provider. - CFfuImage::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM VHD Provider: PID=1780 TID=4000 [W:\] is not recognized by the DISM VHD provider. - CVhdImage::Initialize
+2026-10-19 08:10:52, Info                  DISM   DISM Manager: PID=1780 TID=4000 physical location path: W:\ - CDISMManager::CreateImageSession
+2026-10-19 08:10:52, Info                  DISM   DISM Manager: PID=1780 TID=4000 Event name for current DISM session is Global\__?_Volume{668086f4-4a2d-456f-b2e2-fc65aa3251d8}__1693194375_65536_322150 - CDISMManager::CheckSessionAndLock
+2026-10-19 08:10:52, Info                  DISM   DISM Manager: PID=1780 TID=4000 Create session event 0x270 for current DISM session and event name is Global\__?_Volume{668086f4-4a2d-456f-b2e2-fc65aa3251d8}__1693194375_65536_322150  - CDISMManager::CheckSessionAndLock
+2026-10-19 08:10:52, Info                  DISM   DISM Manager: PID=1780 TID=4000 Copying DISM from "W:\Windows\System32\Dism" - CDISMManager::CreateImageSessionFromLocation
+2026-10-19 08:10:53, Info                  DISM   DISM Manager: PID=1780 TID=4000 Successfully loaded the ImageSession at "X:\windows\TEMP\9B6D64DB-AFCF-4488-A74A-FD9C1B23DBB3" - CDISMManager::LoadRemoteImageSession
+2026-10-19 08:10:53, Info                  DISM   DISM Image Session: PID=3132 TID=2868 Instantiating the Provider Store. - CDISMImageSession::get_ProviderStore
+2026-10-19 08:10:53, Info                  DISM   DISM OS Provider: PID=3132 TID=2868 Defaulting SystemPath to W:\ - CDISMOSServiceManager::Final_OnConnect
+2026-10-19 08:10:53, Info                  DISM   DISM OS Provider: PID=3132 TID=2868 Defaulting Windows folder to W:\Windows - CDISMOSServiceManager::Final_OnConnect
+2026-10-19 08:10:53, Info                  DISM   DISM Provider Store: PID=3132 TID=2868 Attempting to initialize the logger from the Image Session. - CDISMProviderStore::Final_OnConnect
+2026-10-19 08:10:53, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:53, Info                  DISM   DISM Provider Store: PID=3132 TID=2868 Found and Initialized the DISM Logger. - CDISMProviderStore::Internal_InitializeLogger
+2026-10-19 08:10:53, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:53, Info                  DISM   Initialized Panther logging at G:\IMG3_V3\Logs\drivers.log
+2026-10-19 08:10:53, Info                  DISM   DISM Manager: PID=1780 TID=4000 Image session successfully loaded from location: X:\windows\TEMP\9B6D64DB-AFCF-4488-A74A-FD9C1B23DBB3 - CDISMManager::CreateImageSession
+2026-10-19 08:10:53, Info                  DISM   DISM OS Provider: PID=3132 TID=2868 Setting SystemPath to W:\ - CDISMOSServiceManager::SetSystemPath
+2026-10-19 08:10:53, Info                  DISM   DISM.EXE: Target image information: OS Version=10.0.26200.9711, Image architecture=amd64
+2026-10-19 08:10:53, Info                  DISM   DISM.EXE: Image session version: 10.0.26100.9549
+2026-10-19 08:10:53, Info                  DISM   DISM Transmog Provider: PID=3132 TID=2868 Current image session is [OFFLINE] - CTransmogManager::GetMode
+2026-10-19 08:10:53, Info                  DISM   DISM OS Provider: PID=3132 TID=2868 Determined System directory to be W:\Windows\System32 - CDISMOSServiceManager::get_SystemDirectory
+2026-10-19 08:10:53, Info                  DISM   DISM Transmog Provider: PID=3132 TID=2868 Determined WinDir path = [W:\Windows] - CTransmogManager::GetWinDirPath
+2026-10-19 08:10:53, Info                  DISM   DISM Transmog Provider: PID=3132 TID=2868 GetProductType: ProductType = [WinNT] - CTransmogManager::GetProductType
+2026-10-19 08:10:53, Info                  DISM   DISM Transmog Provider: PID=3132 TID=2868 Product Type: [WinNT] - CTransmogManager::Initialize
+2026-10-19 08:10:53, Info                  DISM   DISM Transmog Provider: PID=3132 TID=2868 Product Type ServerNT : [No] - CTransmogManager::Initialize
+2026-10-19 08:10:53, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9703_none_a5009b9d7769c1f5\wcp.dll' : got STATUS_SUCCESS
+2026-10-19 08:10:54, Info                  DISM   DISM Driver Manager: PID=3132 TID=2868 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::Initialize
+2026-10-19 08:10:54, Info                  DISM   DISM Package Manager: PID=3132 TID=2868 Finished initializing the CbsConUI Handler. - CCbsConUIHandler::Initialize
+2026-10-19 08:10:54, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9703_none_a5009b9d7769c1f5\wcp.dll' : got STATUS_SUCCESS
+2026-10-19 08:10:54, Info                  CBS    Universal Time is: 2026-10-19 08:10:54.592
+2026-10-19 08:10:54, Info                  CBS    Offline servicing, skipping online catalog installation
+2026-10-19 08:10:54, Info                  CBS    Offline servicing, using stack version from: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9703_none_a5009b9d7769c1f5\cbscore.dll
+2026-10-19 08:10:54, Info                  CBS    Loaded Servicing Stack v10.0.26100.9703 with Core: W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9703_none_a5009b9d7769c1f5\cbscore.dll
+2026-10-19 08:10:54, Info                  CBS    Setting core mode: CbsCoreModeOffline
+2026-10-19 08:10:54, Info                  CSI    00000001@2026/10/19:08:10:54.608 WcpInitialize: wcp.dll version 10.0.26100.9703 (WinBuild.160101.0800)
+2026-10-19 08:10:54, Info                  CBS    TurboContainer load Successful
+2026-10-19 08:10:54, Info                  CBS    Lock: New lock added: CCbsSessionManager, level: 11, total lock:9
+2026-10-19 08:10:54, Info                  CBS    Lock: New lock added: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-19 08:10:54, Info                  DISM   DISM Package Manager: PID=3132 TID=2868 Loaded servicing stack for offline use only. - CDISMPackageManager::CreateCbsSession
+2026-10-19 08:10:54, Info                  CBS    Lazy store initialization mode
+2026-10-19 08:10:54, Info                  CSI    00000001 Shim considered [l:123]'\??\W:\Windows\WinSxS\amd64_microsoft-windows-servicingstack_31bf3856ad364e35_10.0.26100.9703_none_a5009b9d7769c1f5\wcp.dll' : got STATUS_SUCCESS
+2026-10-19 08:10:54, Error                 DISM   DISM Driver Manager: PID=3132 TID=2868 No valid INF files found on the path 'G:\IMG3_V3\Drivers'. - CDriverManager::OpenPackageByFolder(hr:0x80070002)
+2026-10-19 08:10:54, Warning               DISM   DISM Driver Manager: PID=3132 TID=2868 Errors were found opening driver packages on the path G:\IMG3_V3\Drivers. - CDriverManager::Internal_DoAddDriverPackage
+2026-10-19 08:10:54, Error                 DISM   DISM Driver Manager: PID=3132 TID=2868 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:1088 - CDriverManager::Internal_DoAddDriverPackage(hr:0x80070002)
+2026-10-19 08:10:54, Error                 DISM   DISM Driver Manager: PID=3132 TID=2868 onecore\base\ntsetup\opktools\dism\providers\dmiprovider\dll\drivermanager.cpp:537 - CDriverManager::ExecuteCmdLine(hr:0x80070002)
+2026-10-19 08:10:54, Info                  DISM   DISM Driver Manager: PID=3132 TID=2868 Further logs for driver related operations can be found in the target operating system at %WINDIR%\inf\setupapi.offline.log - CDriverManager::ExecuteCmdLine
+2026-10-19 08:10:54, Info                  DISM   DISM Package Manager: PID=3132 TID=2868 Finalizing CBS core. - CDISMPackageManager::Finalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: ExecutionEngineFinalize
+2026-10-19 08:10:54, Info                  CBS    Execution Engine Finalize
+2026-10-19 08:10:54, Info                  CBS    Execution Engine Finalize
+2026-10-19 08:10:54, Info                  CBS    Execution Engine Finalize
+2026-10-19 08:10:54, Info                  CBS    Execution Engine Finalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: ComponentAnalyzerFinalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: PackageTrackerFinalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CoreResourcesUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: SessionManagerFinalize
+2026-10-19 08:10:54, Info                  CBS    Lock: Lock removed: CSIInventoryCriticalSection, level: 64, total lock:10
+2026-10-19 08:10:54, Info                  CBS    Lock: Lock removed: CCbsSessionManager, level: 11, total lock:9
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CapabilityManagerFinalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: GetPublicObjectMonitor::Audit
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: PublicObjectMonitorFinalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: Enter vCoreInitializeLock
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: WcpUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: DrupUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CfgMgr32Unload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: DpxUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: SrUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: TurboStackUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: TurboContainerUnload
+2026-10-19 08:10:54, Info                  CBS    TurboContainer unload Successful
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CbsEsdUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CbsOneSettingsFinalize
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: CbsEventUnregister
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: AppContainerUnload
+2026-10-19 08:10:54, Info                  CBS    CbsCoreFinalize: WdsUnload, logging from cbscore will end.
+2026-10-19 08:10:54, Info                  DISM   DISM Manager: PID=1780 TID=4000 Closing session event handle 0x270 - CDISMManager::CleanupImageSessionEntry
+2026-10-19 08:10:54, Info                  DISM   DISM.EXE: Image session has been closed. Reboot required=no.
+2026-10-19 08:10:54, Info                  DISM   DISM.EXE: 
+2026-10-19 08:10:54, Info                  DISM   DISM.EXE: <----- Ending Dism.exe session ----->
+2026-10-19 08:10:54, Info                  DISM   DISM.EXE: 

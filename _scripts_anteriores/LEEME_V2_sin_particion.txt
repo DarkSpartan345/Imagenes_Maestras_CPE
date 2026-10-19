@@ -1,0 +1,96 @@
+IMAGEN MAESTRA DE WINDOWS CON HIREN'S BOOTCD PE
+================================================
+
+Copia esta carpeta completa a la RAÍZ de un disco externo (NTFS, con espacio
+suficiente). Estructura:
+
+  ImagenMaestra\
+    ImagenMaestra.cmd   <- ÚNICO script: preparar, capturar y desplegar
+    Imagenes\           <- aquí se guardan los .wim capturados
+    Drivers\            <- (opcional) drivers .inf a inyectar al desplegar
+    Respuesta\          <- (opcional) unattend.xml para automatizar la configuración inicial (OOBE)
+    Logs\               <- se crea sola con los registros de DISM
+
+
+CÓMO SE USA
+-----------
+Doble clic en ImagenMaestra.cmd. Se abre una ventana con tres pestañas:
+
+    1. Preparar y Sysprep   (Windows, equipo de referencia)
+    2. Capturar imagen      (Hiren's, equipo de referencia)
+    3. Desplegar imagen     (Hiren's, equipo de destino)
+
+En cada pestaña eliges las opciones con casillas y listas (particiones,
+imágenes, índices, discos con modelo y tamaño) y pulsas el botón. Abajo
+se ve el progreso y la salida del proceso en tiempo real; el botón
+"Cancelar" detiene el proceso y "Carpeta Logs" abre los registros.
+En Windows la ventana pide permisos de administrador al abrirse.
+
+Si la ventana no se puede abrir (por ejemplo, en un WinPE sin .NET),
+se muestra automáticamente el menú de texto de siempre.
+
+También se puede llamar directamente con la acción:
+
+    ImagenMaestra.cmd gui        (ventana)
+    ImagenMaestra.cmd menu       (menú de texto)
+    ImagenMaestra.cmd preparar [-QuitarAppsProblema] [-LimpiezaProfunda] [-SinCopyProfile]
+    ImagenMaestra.cmd capturar   [-Origen D:] [-Nombre x] [-Descripcion "y"] [-Dividir]
+    ImagenMaestra.cmd desplegar  [-Imagen ruta.wim] [-Indice 1] [-Disco 1] [-Firmware UEFI|BIOS]
+    ImagenMaestra.cmd ayuda
+
+(valen también los números: ImagenMaestra.cmd 2)
+Los datos que no se pasen como parámetro se preguntan en la consola.
+Con -Auto no se pregunta nada (es lo que usa la ventana): si falta un
+dato necesario el proceso termina con error. ¡Ojo! desplegar -Auto
+NO pide escribir BORRAR.
+
+
+PASO 1 - Preparar el equipo de referencia (en Windows)
+------------------------------------------------------
+1. Personaliza el equipo (idealmente en modo auditoría: Ctrl+Shift+F3 en la
+   pantalla de región durante la instalación).
+2. Desconecta internet (evita que la Store actualice apps y rompa Sysprep).
+3. Ejecuta ImagenMaestra.cmd y elige [1]. Si no lo abriste como
+   administrador, pedirá permisos solo. Te preguntará las opciones:
+     - Quitar apps de la Store que bloquean Sysprep
+     - Limpieza profunda de componentes (lenta, reduce la imagen)
+     - CopyProfile (copiar el perfil personalizado al usuario por defecto)
+4. El equipo se apagará. NO lo enciendas en Windows.
+
+
+PASO 2 - Capturar (Hiren's en el equipo de referencia)
+------------------------------------------------------
+1. Conecta el disco externo y arranca desde el USB de Hiren's.
+2. Abre el Explorador, entra al disco externo, ejecuta ImagenMaestra.cmd
+   y elige [2].
+3. El script detecta la partición de Windows, pide el nombre y crea
+   Imagenes\<nombre>.wim. Opcionalmente genera .swm para USB FAT32.
+
+
+PASO 3 - Desplegar (Hiren's en cada equipo de destino)
+------------------------------------------------------
+1. Arranca el equipo de destino con Hiren's y conecta el disco externo.
+2. Ejecuta ImagenMaestra.cmd y elige [3].
+3. Elige la imagen y el disco de destino, y escribe BORRAR para confirmar.
+   El script:
+     - detecta UEFI o BIOS y particiona en consecuencia,
+     - aplica la imagen,
+     - inyecta los drivers de la carpeta Drivers\ (si hay),
+     - copia Respuesta\unattend.xml (si existe) para automatizar la OOBE,
+     - crea el arranque con bcdboot.
+4. Reinicia. Windows hará la configuración inicial.
+
+
+NOTAS
+-----
+- El despliegue no deja elegir el disco donde está esta carpeta,
+  pero revisa SIEMPRE el número de disco antes de escribir BORRAR.
+- Sysprep se puede ejecutar unas 8 veces sobre la misma instalación.
+  Guarda una copia del equipo de referencia ANTES de Sysprep para poder
+  actualizar la imagen en el futuro.
+- Si Sysprep falla: C:\Windows\System32\Sysprep\Panther\setuperr.log
+- Cada equipo de destino necesita su propia licencia de Windows.
+- Si editas ImagenMaestra.cmd, guárdalo con saltos de línea de Windows (CRLF).
+  Al final del archivo están la parte de PowerShell de "preparar" y la
+  interfaz gráfica, cada una tras su línea marcadora (#==PS1==# y
+  #==GUI==#); no las borres ni escribas "#==" dentro de ese código.
