@@ -210,7 +210,7 @@ confirmar, revise siempre el número, modelo y tamaño del disco seleccionado.
   {Menú \textsf{Code}: copiar la URL HTTPS o descargar el ZIP.}
   {fig:clonar}
 
-\section{Copiar la carpeta al disco externo}
+\section{Copiar la carpeta al disco externo}\label{sec:copiar}
 
 Copie la carpeta completa a la \textbf{raíz} del disco externo. En este caso se
 llamó \texttt{IMG3\_V3} (figura~\ref{fig:carpeta}).
@@ -259,7 +259,7 @@ imagen.
   \item Conecte el disco externo.
 \end{itemize}
 
-\section{Elegir las opciones}
+\section{Elegir las opciones}\label{sec:opciones}
 
 \begin{enumerate}
   \item En el disco externo, haga doble clic en \texttt{ImagenMaestra.cmd} y
@@ -307,7 +307,7 @@ cada comprobación con \texttt{[OK]}, \texttt{[!]} (aviso) o \texttt{[X]} (error
   {Inicio de las comprobaciones: dominio y BitLocker.}
   {fig:prep-comprobaciones}
 
-\section{Ajuste del idioma (es-MX)}
+\section{Ajuste del idioma (es-MX)}\label{sec:idioma}
 
 La imagen siempre queda con \textbf{es-MX como único idioma}. Si el equipo no
 lo tiene, la primera ejecución lo descarga, lo fija como idioma de pantalla y
@@ -356,7 +356,7 @@ quita las aplicaciones de la Store que bloquean Sysprep
   {Idioma correcto. El proceso continúa con las apps de la Store.}
   {fig:prep-idioma-ok}
 
-\section{Limpieza y Sysprep}
+\section{Limpieza y Sysprep}\label{sec:sysprep}
 
 Con todo en orden, el script:
 
@@ -386,7 +386,7 @@ arranque debe ser desde la memoria USB de Hiren's.
 Esta fase se ejecuta en el \textbf{mismo equipo de referencia}, arrancando
 desde la memoria USB de Hiren's BootCD PE.
 
-\section{Arrancar desde la memoria USB}
+\section{Arrancar desde la memoria USB}\label{sec:arrancar-usb}
 
 \begin{enumerate}
   \item Con el equipo apagado, conecte la memoria USB de Hiren's y el disco
@@ -440,7 +440,7 @@ La herramienta detecta su propia carpeta, así que no hay que ajustar nada.
          {1000214244.jpeg}{Script \texttt{ImagenMaestra.cmd}.}
          {Ubicación de la herramienta en el disco externo.}{fig:carpeta-hirens}
 
-\section{Configurar la captura}
+\section{Configurar la captura}\label{sec:configurar-captura}
 
 \begin{enumerate}
   \item En la ventana, vaya a la pestaña \boton{2. Capturar imagen}.
@@ -498,7 +498,7 @@ La herramienta detecta su propia carpeta, así que no hay que ajustar nada.
   {Nombre y descripción de la imagen.}
   {fig:nombre}
 
-\section{Ejecutar la captura}
+\section{Ejecutar la captura}\label{sec:ejecutar-captura}
 
 \begin{enumerate}
   \item Pulse \boton{Capturar imagen}.
@@ -546,7 +546,7 @@ recuperación y datos.
 Esta fase se repite en \textbf{cada equipo de destino}, también desde
 Hiren's BootCD PE.
 
-\section{Arrancar el equipo de destino}
+\section{Arrancar el equipo de destino}\label{sec:arrancar-destino}
 
 \begin{enumerate}
   \item Conecte la memoria USB de Hiren's y el disco externo al equipo de
@@ -558,7 +558,7 @@ Hiren's BootCD PE.
         disco externo.
 \end{enumerate}
 
-\section{Elegir imagen y disco de destino}
+\section{Elegir imagen y disco de destino}\label{sec:elegir-disco}
 
 \begin{enumerate}
   \item Vaya a la pestaña \boton{3. Desplegar imagen}.
@@ -607,7 +607,7 @@ Verifique que el disco elegido \textbf{no} sea el disco externo ni la memoria
 USB. La acción no se puede deshacer.
 \end{importante}
 
-\section{Proceso automático}
+\section{Proceso automático}\label{sec:proceso-automatico}
 
 Después de confirmar, el script hace todo sin intervención:
 
@@ -634,7 +634,7 @@ externo antes de que arranque Windows. ¿Reiniciar ahora?}
         disco externo}.
 \end{enumerate}
 
-\section{Primer arranque del equipo desplegado}
+\section{Primer arranque del equipo desplegado}\label{sec:primer-arranque}
 
 En el primer arranque Windows termina de configurar el hardware. Aparece el
 logotipo de arranque personalizado y el mensaje \emph{Preparando dispositivos}
@@ -692,7 +692,7 @@ crear el usuario:
 Después del despliegue se comprobó que las particiones y el entorno de
 recuperación quedaron igual que en el equipo de referencia.
 
-\section{Particiones}
+\section{Particiones}\label{sec:particiones}
 
 Abra \emph{Administración de discos} (clic derecho en Inicio $\rightarrow$
 \emph{Administración de discos}). El disco 0 debe mostrar las mismas
@@ -722,7 +722,7 @@ particiones que el equipo de referencia (figura~\ref{fig:discos}).
   \caption{Particiones del disco 0 después del despliegue.}
 \end{table}
 
-\section{Entorno de recuperación (WinRE)}
+\section{Entorno de recuperación (WinRE)}\label{sec:winre}
 
 \begin{enumerate}
   \item En la búsqueda de Windows escriba \texttt{recuperación} y abra
@@ -774,20 +774,20 @@ confirma que la partición de recuperación se restauró y quedó registrada.
   \centering
   \small
   \rowcolors{2}{grisclaro}{white}
-  \begin{tabularx}{\textwidth}{@{}c X l@{}}
+  \begin{tabularx}{\textwidth}{@{}c X l l@{}}
     \toprule
-    \textbf{Paso} & \textbf{Acción} & \textbf{Figura} \\
+    \textbf{Paso} & \textbf{Acción} & \textbf{Sección} & \textbf{Figura} \\
     \midrule
-    1 & Copiar la carpeta de la herramienta a la raíz del disco externo & \ref{fig:carpeta} \\
-    2 & En Windows, sin internet: \textsf{Preparar y Sysprep} con las opciones marcadas & \ref{fig:prep-opciones} \\
-    3 & Si pide reiniciar por el idioma: reiniciar y repetir el paso 2 & \ref{fig:prep-idioma1} \\
-    4 & Esperar a que Sysprep apague el equipo; \textbf{no} arrancar Windows & \ref{fig:sysprep} \\
-    5 & Arrancar Hiren's desde la USB (\textsf{F8}) con el disco externo conectado & \ref{fig:menu-arranque} \\
-    6 & \textsf{Capturar imagen}: revisar particiones, poner nombre y capturar & \ref{fig:nombre} \\
-    7 & En cada equipo de destino: arrancar Hiren's y abrir la herramienta & \ref{fig:hirens} \\
-    8 & \textsf{Desplegar imagen}: elegir imagen y disco, escribir \texttt{BORRAR} & \ref{fig:borrar} \\
-    9 & Retirar USB y disco externo, reiniciar y completar el primer inicio & \ref{fig:escritorio} \\
-    10 & Verificar las particiones y el entorno de recuperación (WinRE) & \ref{fig:discos} \\
+    1 & Copiar la carpeta de la herramienta a la raíz del disco externo & \ref{sec:copiar} & \ref{fig:carpeta} \\
+    2 & En Windows, sin internet: \textsf{Preparar y Sysprep} con las opciones marcadas & \ref{sec:opciones} & \ref{fig:prep-opciones} \\
+    3 & Si pide reiniciar por el idioma: reiniciar y repetir el paso 2 & \ref{sec:idioma} & \ref{fig:prep-idioma1} \\
+    4 & Esperar a que Sysprep apague el equipo; \textbf{no} arrancar Windows & \ref{sec:sysprep} & \ref{fig:sysprep} \\
+    5 & Arrancar Hiren's desde la USB (\textsf{F8}) con el disco externo conectado & \ref{sec:arrancar-usb} & \ref{fig:menu-arranque} \\
+    6 & \textsf{Capturar imagen}: revisar particiones, poner nombre y capturar & \ref{sec:configurar-captura} y \ref{sec:ejecutar-captura} & \ref{fig:nombre} \\
+    7 & En cada equipo de destino: arrancar Hiren's y abrir la herramienta & \ref{sec:arrancar-destino} & \ref{fig:hirens} \\
+    8 & \textsf{Desplegar imagen}: elegir imagen y disco, escribir \texttt{BORRAR} & \ref{sec:elegir-disco} & \ref{fig:borrar} \\
+    9 & Retirar USB y disco externo, reiniciar y completar el primer inicio & \ref{sec:proceso-automatico} y \ref{sec:primer-arranque} & \ref{fig:escritorio} \\
+    10 & Verificar las particiones y el entorno de recuperación (WinRE) & \ref{sec:particiones} y \ref{sec:winre} & \ref{fig:discos} \\
     \bottomrule
   \end{tabularx}
   \caption{Lista de pasos del proceso completo.}

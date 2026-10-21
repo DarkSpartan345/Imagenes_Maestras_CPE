@@ -472,18 +472,18 @@ Abra *Administración de discos* (clic derecho en Inicio → *Administración de
 
 ## 7. Resumen rápido
 
-| Paso | Acción | Figura |
-|:----:|--------|:------:|
-| 1 | Copiar la carpeta de la herramienta a la raíz del disco externo | 2.3 |
-| 2 | En Windows, sin internet: **Preparar y Sysprep** con las opciones marcadas | 3.1 |
-| 3 | Si pide reiniciar por el idioma: reiniciar y repetir el paso 2 | 3.4 |
-| 4 | Esperar a que Sysprep apague el equipo; **no** arrancar Windows | 3.7 |
-| 5 | Arrancar Hiren's desde la USB (<kbd>F8</kbd>) con el disco externo conectado | 4.2 |
-| 6 | **Capturar imagen**: revisar particiones, poner nombre y capturar | 4.8 |
-| 7 | En cada equipo de destino: arrancar Hiren's y abrir la herramienta | 4.3 |
-| 8 | **Desplegar imagen**: elegir imagen y disco, escribir `BORRAR` | 5.1 |
-| 9 | Retirar USB y disco externo, reiniciar y completar el primer inicio | 5.7 |
-| 10 | Verificar las particiones y el entorno de recuperación (WinRE) | 6.1 |
+| Paso | Acción | Sección | Figura |
+|:----:|--------|:-------:|:------:|
+| 1 | Copiar la carpeta de la herramienta a la raíz del disco externo | [2.2](#22-copiar-la-carpeta-al-disco-externo) | 2.3 |
+| 2 | En Windows, sin internet: **Preparar y Sysprep** con las opciones marcadas | [3.2](#32-elegir-las-opciones) | 3.1 |
+| 3 | Si pide reiniciar por el idioma: reiniciar y repetir el paso 2 | [3.4](#34-ajuste-del-idioma-es-mx) | 3.4 |
+| 4 | Esperar a que Sysprep apague el equipo; **no** arrancar Windows | [3.5](#35-limpieza-y-sysprep) | 3.7 |
+| 5 | Arrancar Hiren's desde la USB (<kbd>F8</kbd>) con el disco externo conectado | [4.1](#41-arrancar-desde-la-memoria-usb) | 4.2 |
+| 6 | **Capturar imagen**: revisar particiones, poner nombre y capturar | [4.3](#43-configurar-la-captura) y [4.4](#44-ejecutar-la-captura) | 4.8 |
+| 7 | En cada equipo de destino: arrancar Hiren's y abrir la herramienta | [5.1](#51-arrancar-el-equipo-de-destino) | 4.3 |
+| 8 | **Desplegar imagen**: elegir imagen y disco, escribir `BORRAR` | [5.2](#52-elegir-imagen-y-disco-de-destino) | 5.1 |
+| 9 | Retirar USB y disco externo, reiniciar y completar el primer inicio | [5.3](#53-proceso-automático) y [5.4](#54-primer-arranque-del-equipo-desplegado) | 5.7 |
+| 10 | Verificar las particiones y el entorno de recuperación (WinRE) | [6.1](#61-particiones) y [6.2](#62-entorno-de-recuperación-winre) | 6.1 |
 
 ---
 
