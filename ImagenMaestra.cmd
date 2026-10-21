@@ -1091,6 +1091,23 @@ function IdiomasDelSistema {
         $_.PackageName -like 'Microsoft-Windows-Client-LanguagePack-Package~*' -and $_.PackageState -eq 'Installed'
     } | ForEach-Object { ($_.PackageName -split '~')[3] } | Sort-Object -Unique)
 }
+# Idiomas de reserva de un idioma: Windows toma de ellos los textos que el
+# idioma no trae. es-MX, por ejemplo, usa es-ES: sin es-ES instalado la
+# configuracion inicial de los equipos desplegados entra en bucle.
+function ReservasDe([string]$leng) {
+    $r = New-Object System.Collections.Generic.List[string]
+    $k = "HKLM:\SYSTEM\CurrentControlSet\Control\MUI\UILanguages\$leng"
+    $f = (Get-ItemProperty -Path $k -Name DefaultFallback -ErrorAction SilentlyContinue).DefaultFallback
+    if ($f) { $r.Add("$f") }
+    $actual = $null
+    foreach ($linea in (& dism.exe /Online /Get-Intl /English 2>$null)) {
+        if ("$linea" -match '^\s*Installed language\(s\)\s*:\s*([A-Za-z]{2,3}-[A-Za-z0-9-]+)') { $actual = $matches[1] }
+        elseif ($actual -eq $leng -and "$linea" -match '^\s*Fallback Languages?\s*:?\s*(.+)$') {
+            foreach ($x in ($matches[1] -split '[,;\s]+')) { if ($x -match '^[A-Za-z]{2,3}-') { $r.Add($x) } }
+        }
+    }
+    @($r | Where-Object { $_ -and $_ -ne $leng -and $_ -ne 'en-US' } | Sort-Object -Unique)
+}
 function IdiomaActualTexto {
     $c = Get-WinUILanguageOverride
     if (-not $c) { $c = [Globalization.CultureInfo]::InstalledUICulture }
@@ -1113,6 +1130,32 @@ if ($lps -notcontains $idiomaES) {
             $reiniciarIdioma = $true
         } catch {
             $errorIdioma = "No se pudo descargar ni instalar $idiomaES (sin internet, edicion Single Language, WSUS...): $($_.Exception.Message)"
+        }
+    }
+}
+
+# Los idiomas de reserva de es-MX deben quedar instalados (sin usarse como
+# idioma de pantalla). Si faltan se descargan, igual que es-MX.
+$reservasES = @()
+if (-not $errorIdioma) {
+    $reservasES = @(ReservasDe $idiomaES)
+    foreach ($r in $reservasES) {
+        if ($lps -contains $r) { continue }
+        Aviso "$idiomaES usa $r como idioma de reserva y $r no esta instalado."
+        if (-not (Get-Command Install-Language -ErrorAction SilentlyContinue)) {
+            $errorIdioma = "Falta el idioma de reserva $r y este Windows no tiene Install-Language para descargarlo."
+            break
+        }
+        Write-Host "   Descargando e instalando $r como reserva de $idiomaES (necesita internet)..."
+        try {
+            Install-Language -Language $r -ErrorAction Stop | Out-Null
+            $lps = IdiomasDelSistema
+            if ($lps -notcontains $r) { throw "Install-Language termino pero el paquete de idioma $r no aparece instalado." }
+            Ok "Idioma de reserva $r instalado (no se usa como idioma de pantalla)"
+            $reiniciarIdioma = $true
+        } catch {
+            $errorIdioma = "No se pudo descargar el idioma de reserva $r (conecta internet y vuelve a ejecutar Preparar): $($_.Exception.Message)"
+            break
         }
     }
 }
@@ -1170,7 +1213,7 @@ if ($errorIdioma) {
     }
 
     # Dejar es-MX como UNICO idioma: se desinstalan los demas.
-    $otros = @(IdiomasDelSistema | Where-Object { $_ -ne $idiomaES })
+    $otros = @(IdiomasDelSistema | Where-Object { $_ -ne $idiomaES -and $reservasES -notcontains $_ })
     if ($otros.Count) {
         if (Get-Command Uninstall-Language -ErrorAction SilentlyContinue) {
             $quitados = 0
@@ -1196,7 +1239,8 @@ if ($errorIdioma) {
         try { Copy-UserInternationalSettingsToSystem -WelcomeScreen $true -NewUser $true -ErrorAction Stop }
         catch { Aviso "No se pudo copiar el idioma a la bienvenida y usuarios nuevos: $($_.Exception.Message)" }
     }
-    Ok "La imagen queda en $idiomaES como unico idioma (idiomas del sistema: $((IdiomasDelSistema) -join ', '))"
+    $txtRes = ''; if ($reservasES.Count) { $txtRes = "; $($reservasES -join ', ') instalado solo como reserva" }
+    Ok "La imagen queda en $idiomaES como unico idioma de pantalla (idiomas del sistema: $((IdiomasDelSistema) -join ', ')$txtRes)"
 }
 
 # --- Apps de la Store que bloquean Sysprep ------------------------
@@ -1207,31 +1251,66 @@ $problema = Get-AppxPackage -AllUsers | Where-Object {
     $_.SignatureKind -eq 'Store' -and ($provisionadas -notcontains $_.Name)
 }
 # Paquetes de idioma (LanguageExperiencePack) instalados solo para un usuario.
-# Quitarlos SOLO es seguro si el idioma tiene ademas su paquete de idioma
-# completo del sistema (LanguagePack .cab, el que instala Install-Language).
-# Sin el, el idioma queda sin textos y la configuracion inicial de los equipos
-# desplegados entra en bucle de reinicios, aunque se elija otro idioma.
+# Sysprep no los acepta. Quitarlos es seguro si:
+#   a) el idioma tiene su paquete de idioma completo del sistema (.cab), o
+#   b) la imagen ya no usa ese idioma: no es el idioma de pantalla ni del
+#      sistema, no esta instalado y ningun idioma instalado lo usa de reserva
+#      (por ejemplo, el es-ES que queda de antes al dejar la imagen en es-MX).
+# Si el idioma SI se usa y no tiene paquete completo, quitarlo deja la
+# configuracion inicial de los equipos desplegados en bucle: se detiene.
 $idiomas  = @($problema | Where-Object { $_.Name -like '*LanguageExperiencePack*' })
 $problema = @($problema | Where-Object { $_.Name -notlike '*LanguageExperiencePack*' })
 if ($idiomas.Count) {
     $lpInstalados = @(Get-WindowsPackage -Online -ErrorAction SilentlyContinue | Where-Object {
         $_.PackageName -like 'Microsoft-Windows-Client-LanguagePack-Package~*' -and $_.PackageState -eq 'Installed'
     } | ForEach-Object { ($_.PackageName -split '~')[3] })
+
+    # Idiomas que la imagen usa: pantalla de la cuenta, sistema y los instalados.
+    $enUso = New-Object System.Collections.Generic.List[string]
+    try { $enUso.Add("$((Get-WinUILanguageOverride).Name)") } catch {}
+    try { $enUso.Add((Get-UICulture).Name) } catch {}
+    if (Get-Command Get-SystemPreferredUILanguage -ErrorAction SilentlyContinue) {
+        try { $enUso.Add("$(Get-SystemPreferredUILanguage)") } catch {}
+    }
+    foreach ($l in $lpInstalados) { $enUso.Add($l) }
+    $enUso = @($enUso | Where-Object { $_ } | Sort-Object -Unique)
+    # Idiomas de reserva de los idiomas en uso (segun Windows). Solo cuentan los
+    # de idiomas en uso: dism tambien lista idiomas que ya no se usan.
+    $reserva = New-Object System.Collections.Generic.List[string]
+    $actual = $null
+    foreach ($linea in (& dism.exe /Online /Get-Intl /English 2>$null)) {
+        if ("$linea" -match '^\s*Installed language\(s\)\s*:\s*([A-Za-z]{2,3}-[A-Za-z0-9-]+)') { $actual = $matches[1] }
+        elseif ($actual -and ($enUso -contains $actual) -and "$linea" -match '^\s*Fallback Languages?\s*:?\s*(.+)$') {
+            foreach ($f in ($matches[1] -split '[,;\s]+')) { if ($f -match '^[A-Za-z]{2,3}-') { $reserva.Add($f) } }
+        }
+    }
+    foreach ($l in $enUso) {
+        $k = "HKLM:\SYSTEM\CurrentControlSet\Control\MUI\UILanguages\$l"
+        $f = (Get-ItemProperty -Path $k -Name DefaultFallback -ErrorAction SilentlyContinue).DefaultFallback
+        if ($f) { $reserva.Add("$f") }
+    }
+    $reserva = @($reserva | Where-Object { $_ } | Sort-Object -Unique)
 }
 foreach ($lxp in $idiomas) {
     $leng = $lxp.Name -replace '^Microsoft\.LanguageExperiencePack', ''
     Aviso "Paquete de idioma instalado solo para un usuario: $($lxp.Name)"
+    $motivo = $null
     if ($lpInstalados -contains $leng) {
+        $motivo = "el idioma $leng esta instalado completo en el sistema"
+    } elseif (($enUso -notcontains $leng) -and ($reserva -notcontains $leng)) {
+        $motivo = "la imagen ya no usa $leng (idiomas en uso: $($enUso -join ', '))"
+    }
+    if ($motivo) {
         try {
             Remove-AppxPackage -Package $lxp.PackageFullName -AllUsers -ErrorAction Stop
-            Ok "El idioma $leng esta instalado completo en el sistema; se quita solo su paquete por usuario."
+            Ok "Quitado $($lxp.Name): $motivo."
         } catch {
             Fallo "No se pudo quitar $($lxp.Name): $($_.Exception.Message)"
         }
     } else {
-        Fallo ("El idioma $leng no esta instalado completo en el sistema y quitar su paquete dejaria la imagen " +
-               "en bucle. Con internet, en PowerShell como administrador: Install-Language $leng ; reinicia, " +
-               "desconecta internet y vuelve a ejecutar Preparar.")
+        $porque = if ($reserva -contains $leng) { "otro idioma instalado lo usa de reserva" } else { "es un idioma en uso" }
+        Fallo ("El idioma $leng no esta instalado completo en el sistema y $porque (idiomas en uso: " +
+               "$($enUso -join ', ')). Quitar su paquete dejaria la imagen en bucle; no se ejecuta Sysprep.")
     }
 }
 if ($problema.Count) {
