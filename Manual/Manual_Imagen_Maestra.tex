@@ -256,8 +256,53 @@ imagen.
   \item \textbf{Desconecte internet}, para que la Microsoft Store no actualice
         aplicaciones y bloquee Sysprep. La única excepción es cuando falta el
         idioma es-MX: esa vez sí se necesita internet para descargarlo.
+  \item \textbf{Quite el cifrado del dispositivo} (BitLocker), como se indica
+        a continuación. Con la unidad \texttt{C:} cifrada la imagen no se puede
+        capturar.
   \item Conecte el disco externo.
 \end{itemize}
+
+\subsection*{Quitar el cifrado del dispositivo}\label{sec:descifrar}
+
+\begin{enumerate}
+  \item Busque \emph{configuración} en el menú Inicio y abra la aplicación
+        \boton{Configuración}. En el menú de la izquierda elija
+        \boton{Privacidad y seguridad} (figura~\ref{fig:cifrado-abrir}).
+\end{enumerate}
+
+\dosfotos{image(20).png}{Buscar y abrir \textsf{Configuración}.}
+  {image(21).png}{Entrar en \textsf{Privacidad y seguridad}.}
+  {Acceso a la configuración de privacidad y seguridad.}
+  {fig:cifrado-abrir}
+
+\begin{enumerate}[resume]
+  \item En la sección \emph{Seguridad} pulse \boton{Cifrado de dispositivo}.
+        Si aparece en \emph{Activado}, pulse el interruptor para desactivarlo
+        (figura~\ref{fig:cifrado-desactivar}).
+\end{enumerate}
+
+\dosfotos{image(22).png}{Opción \textsf{Cifrado de dispositivo}.}
+  {image(23).png}{Cifrado activado: pulse el interruptor.}
+  {Desactivación del cifrado del dispositivo.}
+  {fig:cifrado-desactivar}
+
+\begin{enumerate}[resume]
+  \item Confirme con \boton{Desactivar} (figura~\ref{fig:cifrado-confirmar}).
+\end{enumerate}
+
+\foto[0.55\textwidth]{image(24).png}
+  {Confirmación para desactivar el cifrado.}
+  {fig:cifrado-confirmar}
+
+\begin{enumerate}[resume]
+  \item Espere a que termine el descifrado; puede tardar varios minutos. Al
+        final la opción queda en \emph{Desactivado}
+        (figura~\ref{fig:cifrado-listo}).
+\end{enumerate}
+
+\foto[0.8\textwidth]{image(25).png}
+  {Cifrado del dispositivo desactivado.}
+  {fig:cifrado-listo}
 
 \section{Elegir las opciones}\label{sec:opciones}
 
