@@ -10,7 +10,7 @@
 \usepackage[spanish,es-tabla]{babel}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage[margin=2.3cm]{geometry}
+\usepackage[margin=2.3cm,headheight=26pt]{geometry}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{caption}
@@ -24,7 +24,7 @@
 \usepackage[most]{tcolorbox}
 \usepackage[hidelinks]{hyperref}
 
-\graphicspath{{../Imagenes manual/}}
+\graphicspath{{../Imagenes manual/}{logos/}}
 
 % ---------------------------------------------------------------------
 %  Colores y estilo
@@ -35,7 +35,7 @@
 \definecolor{verdeok}{HTML}{067647}
 
 \titleformat{\chapter}[display]
-  {\normalfont\bfseries\color{azulcpe}}
+  {\normalfont\bfseries\color{azulcpe}\raggedright}
   {\large\MakeUppercase{\chaptertitlename}\ \thechapter}
   {4pt}{\Huge}
 \titleformat{\section}{\normalfont\Large\bfseries\color{azulcpe}}{\thesection}{0.8em}{}
@@ -46,7 +46,8 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\small\color{gray}Manual de imagen maestra CPE}
+\fancyhead[L]{\raisebox{-0.3\height}{\includegraphics[height=0.75cm]{unal_escudo_verde.png}}%
+  \hspace{6pt}\small\color{gray}Manual de imagen maestra CPE}
 \fancyhead[R]{\small\color{gray}\leftmark}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -105,14 +106,14 @@
 % ---------------------------------------------------------------------
 \begin{titlepage}
   \centering
-  \vspace*{1.5cm}
+  \includegraphics[width=3.6cm]{unal_logosimbolo_verde.png}\\[1cm]
   {\color{azulcpe}\rule{\linewidth}{1.2pt}}\\[0.8cm]
   {\Huge\bfseries\color{azulcpe} Manual de imagen maestra de Windows\par}
   \vspace{0.4cm}
   {\LARGE Preparación, captura y despliegue\par}
   \vspace{0.5cm}
   {\color{azulcpe}\rule{\linewidth}{1.2pt}}\\[1.2cm]
-  \includegraphics[width=0.8\textwidth]{Image_20261020_1306382292668009792503941.jpeg}\\[1cm]
+  \includegraphics[width=0.62\textwidth]{Image_20261020_1306382292668009792503941.jpeg}\\[0.8cm]
   {\large Herramienta \texttt{ImagenMaestra.cmd} con Hiren's BootCD PE\par}
   \vspace{0.3cm}
   {\large Equipo de referencia: ASUS ExpertBook\par}
@@ -193,8 +194,9 @@ confirmar, revise siempre el número, modelo y tamaño del disco seleccionado.
 \section{Descargar el repositorio}
 
 \begin{enumerate}
-  \item Abra el repositorio \texttt{Imagenes\_Maestras\_CPE} en GitHub y pulse
-        el botón verde \boton{Code} (figura~\ref{fig:github}).
+  \item Abra el repositorio \texttt{Imagenes\_Maestras\_CPE} en GitHub:\\[2pt]
+        {\color{azulcpe}\underline{\url{https://github.com/DarkSpartan345/Imagenes_Maestras_CPE}}}\\[2pt]
+        y pulse el botón verde \boton{Code} (figura~\ref{fig:github}).
   \item En el menú que aparece, copie la dirección HTTPS para clonarlo con Git,
         o elija \boton{Download ZIP} para descargarlo como archivo comprimido
         (figura~\ref{fig:clonar}).
@@ -239,6 +241,7 @@ llamó \texttt{IMG3\_V3} (figura~\ref{fig:carpeta}).
 
 % =====================================================================
 \chapter{Fase 1: preparación del equipo de referencia}
+\chaptermark{Fase 1: preparación}
 % =====================================================================
 
 Esta fase se ejecuta en el \textbf{Windows del equipo de referencia}, después
@@ -262,7 +265,7 @@ imagen.
   \item En el disco externo, haga doble clic en \texttt{ImagenMaestra.cmd} y
         concédale los permisos de administrador que solicita al abrirse.
   \item Vaya a la pestaña \boton{1. Preparar y Sysprep}.
-  \item Marque las opciones señaladas con flechas en la figura~\ref{fig:prep-opciones}:
+  \item Marque las opciones señaladas en rojo en la figura~\ref{fig:prep-opciones}:
     \begin{itemize}
       \item \emph{Quitar automáticamente las apps de la Store que bloquean Sysprep.}
       \item \emph{Dejar SOLO la cuenta AdministradorCPE}, con la casilla
@@ -272,8 +275,8 @@ imagen.
   \item Pulse \boton{Preparar y ejecutar Sysprep}.
 \end{enumerate}
 
-\foto{image(4).png}
-  {Pestaña \textsf{Preparar y Sysprep} con las opciones usadas (flechas rojas).}
+\foto[0.8\textwidth]{image(12).png}
+  {Pestaña \textsf{Preparar y Sysprep} con las opciones usadas (marcadas en rojo).}
   {fig:prep-opciones}
 
 \begin{enumerate}[resume]
@@ -283,7 +286,7 @@ imagen.
         apagará al terminar. Pulse \boton{Sí} (figura~\ref{fig:prep-confirmar}).
 \end{enumerate}
 
-\foto{image(5).png}
+\foto[0.6\textwidth]{image(13).png}
   {Confirmación antes de ejecutar la preparación.}
   {fig:prep-confirmar}
 
@@ -300,7 +303,7 @@ cada comprobación con \texttt{[OK]}, \texttt{[!]} (aviso) o \texttt{[X]} (error
   \item Que el idioma de la imagen sea español latinoamericano (es-MX).
 \end{enumerate}
 
-\foto{image(6).png}
+\foto{image(14).png}
   {Inicio de las comprobaciones: dominio y BitLocker.}
   {fig:prep-comprobaciones}
 
@@ -311,7 +314,7 @@ lo tiene, la primera ejecución lo descarga, lo fija como idioma de pantalla y
 termina con el mensaje \texttt{Preparar terminó con errores (código 1)}. No es
 una falla: pide reiniciar para aplicar el idioma (figura~\ref{fig:prep-idioma1}).
 
-\foto{image(7).png}
+\foto{image(15).png}
   {Primera ejecución: es-MX instalado y fijado. Se pide reiniciar, iniciar
    sesión con la misma cuenta, desconectar internet y volver a ejecutar.}
   {fig:prep-idioma1}
@@ -320,9 +323,18 @@ En este equipo también faltaba el español de España (es-ES), que Windows usa
 como idioma de reserva de es-MX. El script lo descargó e instaló y volvió a
 pedir reinicio (figura~\ref{fig:prep-idioma2}).
 
-\dosfotos{image(9).png}{Descarga de es-ES como reserva de es-MX.}
-         {image(10).png}{es-ES instalado; se pide reiniciar de nuevo.}
-         {Instalación del idioma de reserva.}{fig:prep-idioma2}
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{0.88\textwidth}
+    \centering\includegraphics[width=\linewidth]{image(16).png}
+    \caption{Descarga de es-ES como reserva de es-MX.}
+  \end{subfigure}\\[8pt]
+  \begin{subfigure}{0.88\textwidth}
+    \centering\includegraphics[width=\linewidth]{image(17).png}
+    \caption{es-ES instalado; se pide reiniciar de nuevo.}
+  \end{subfigure}
+  \caption{Instalación del idioma de reserva.}\label{fig:prep-idioma2}
+\end{figure}
 
 \begin{nota}[Qué hacer cuando pide reiniciar]
 \begin{enumerate}
@@ -340,7 +352,7 @@ En la siguiente ejecución la comprobación de idioma sale correcta:
 quita las aplicaciones de la Store que bloquean Sysprep
 (figura~\ref{fig:prep-idioma-ok}).
 
-\foto{image(8).png}
+\foto[\textwidth]{image(18).png}
   {Idioma correcto. El proceso continúa con las apps de la Store.}
   {fig:prep-idioma-ok}
 
@@ -357,7 +369,7 @@ Con todo en orden, el script:
         \texttt{\small sysprep.exe /generalize /oobe /shutdown /quiet /unattend:C:\bs Windows\bs System32\bs Sysprep\bs unattend.xml}
 \end{enumerate}
 
-\foto{image(11).png}
+\foto[0.5\textwidth]{image(19).png}
   {Sysprep en ejecución (fase de limpieza de complementos).}
   {fig:sysprep}
 
