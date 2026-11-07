@@ -8,10 +8,17 @@ rem  Sin parametros abre la interfaz grafica (si no se puede,
 rem  muestra el menu de texto). Tambien se puede llamar
 rem  directamente con la accion:
 rem
-rem    ImagenMaestra.cmd preparar  [-SinCopyProfile] [-QuitarAppsProblema] [-LimpiezaProfunda]
+rem    ImagenMaestra.cmd preparar  [-QuitarAppsProblema] [-LimpiezaProfunda]
 rem    ImagenMaestra.cmd capturar  [-Origen D:] [-Nombre x] [-Descripcion "y"] [-Dividir]
-rem    ImagenMaestra.cmd desplegar [-Imagen ruta.wim] [-Indice 1] [-Disco 1] [-Firmware UEFI o BIOS]
+rem    ImagenMaestra.cmd desplegar [-Imagen ruta.wim] [-Indice 1] [-Disco 1] [-Firmware UEFI o BIOS] [-NombreEquipo x]
 rem    ImagenMaestra.cmd anadirparticiones [-Origen C:] [-Imagen ruta.wim]
+rem    ImagenMaestra.cmd montar    [-Imagen ruta.wim] [-Indice 1] [-Montaje carpeta]
+rem    ImagenMaestra.cmd guardar   [-Montaje carpeta]   (guarda sin desmontar)
+rem    ImagenMaestra.cmd desmontar [-Montaje carpeta] [-Guardar o -Descartar]
+rem    ImagenMaestra.cmd inyectardrivers [-Montaje carpeta]
+rem    ImagenMaestra.cmd montadas  (lista las imagenes montadas)
+rem    ImagenMaestra.cmd repararmontajes
+rem    ImagenMaestra.cmd limpiarcaches [-Montaje carpeta]
 rem    ImagenMaestra.cmd gui       (interfaz grafica)
 rem    ImagenMaestra.cmd menu      (menu de texto)
 rem    ImagenMaestra.cmd ayuda
@@ -34,7 +41,7 @@ reg query "HKLM\SYSTEM\CurrentControlSet\Control\MiniNT" >nul 2>&1 && set "ENPE=
 
 set "AUTO=0"
 set "OPCS="
-for %%v in (P_ORIGEN P_NOMBRE P_DESC P_DIVIDIR P_IMAGEN P_INDICE P_DISCO P_FIRMWARE P_SINEXTRAS) do set "%%v="
+for %%v in (P_ORIGEN P_NOMBRE P_DESC P_DIVIDIR P_IMAGEN P_INDICE P_DISCO P_FIRMWARE P_SINEXTRAS P_MONTAJE P_GUARDAR P_NOMEQUIPO) do set "%%v="
 
 set "ACCION=%~1"
 if not defined ACCION goto :gui
@@ -55,6 +62,10 @@ if /i "%~1"=="-Imagen"      (set "P_IMAGEN=%~2" & shift & goto :leer_args)
 if /i "%~1"=="-Indice"      (set "P_INDICE=%~2" & shift & goto :leer_args)
 if /i "%~1"=="-Disco"       (set "P_DISCO=%~2" & shift & goto :leer_args)
 if /i "%~1"=="-Firmware"    (set "P_FIRMWARE=%~2" & shift & goto :leer_args)
+if /i "%~1"=="-Montaje"     (set "P_MONTAJE=%~2" & shift & goto :leer_args)
+if /i "%~1"=="-Guardar"     (set "P_GUARDAR=S" & goto :leer_args)
+if /i "%~1"=="-Descartar"   (set "P_GUARDAR=N" & goto :leer_args)
+if /i "%~1"=="-NombreEquipo" (set "P_NOMEQUIPO=%~2" & shift & goto :leer_args)
 set "OPCS=!OPCS! %~1"
 goto :leer_args
 
@@ -109,6 +120,8 @@ echo    [3] Desplegar imagen     (Hiren's, equipo de destino)
 echo    [4] Ayuda
 echo    [5] Interfaz grafica
 echo    [6] Anadir particiones a una imagen ya capturada (Hiren's)
+echo    [7] Montar una imagen .wim para modificarla
+echo    [8] Imagenes montadas (guardar cambios o desmontar)
 echo    [0] Salir
 echo.
 set "OPC="
@@ -120,6 +133,8 @@ if "%OPC%"=="3" (call :lanzar desplegar & goto :menu)
 if "%OPC%"=="4" (call :ayuda & pause & goto :menu)
 if "%OPC%"=="5" goto :gui
 if "%OPC%"=="6" (call :lanzar anadirparticiones & goto :menu)
+if "%OPC%"=="7" (call :lanzar montar & goto :menu)
+if "%OPC%"=="8" (call :lanzar montadas & goto :menu)
 goto :menu
 
 :menu_preparar
@@ -132,8 +147,8 @@ set "R=N"
 set /p R="Limpieza profunda de componentes (lenta, reduce la imagen)? S/N [N]: "
 if /i "%R%"=="S" set "OPCS=!OPCS! -LimpiezaProfunda"
 set "R=S"
-set /p R="Copiar el perfil personalizado al usuario por defecto (CopyProfile)? S/N [S]: "
-if /i "%R%"=="N" set "OPCS=!OPCS! -SinCopyProfile"
+set /p R="Poner el fondo de escritorio de esta cuenta, obligatorio, en todas las cuentas? S/N [S]: "
+if /i "%R%"=="N" set "OPCS=!OPCS! -SinFondoComun"
 set "R=S"
 set /p R="Dejar SOLO la cuenta AdministradorCPE (se eliminan las demas cuentas)? S/N [S]: "
 if /i "!R!"=="S" (
@@ -166,6 +181,13 @@ if /i "%~1"=="menu"      goto :menu
 if /i "%~1"=="ayuda"     goto :ayuda
 if /i "%~1"=="particiones" goto :particiones
 if /i "%~1"=="anadirparticiones" goto :anadir_particiones
+if /i "%~1"=="montar"    goto :montar
+if /i "%~1"=="guardar"   goto :guardar_montaje
+if /i "%~1"=="desmontar" goto :desmontar
+if /i "%~1"=="inyectardrivers" goto :inyectar_drivers
+if /i "%~1"=="montadas"  goto :montadas
+if /i "%~1"=="repararmontajes" goto :reparar_montajes
+if /i "%~1"=="limpiarcaches" goto :limpiar_caches
 if /i "%~1"=="/?"        goto :ayuda
 echo [X] Accion desconocida: %~1
 echo.
@@ -187,7 +209,7 @@ echo    preparar   1   En Windows, equipo de referencia. Valida, limpia y
 echo                   ejecuta Sysprep. Opciones:
 echo                     -QuitarAppsProblema  Quita las apps de la Store que bloquean Sysprep
 echo                     -LimpiezaProfunda    DISM /StartComponentCleanup /ResetBase
-echo                     -SinCopyProfile      No copiar el perfil al usuario por defecto
+echo                     -SinFondoComun       No fijar el fondo de esta cuenta en todas las cuentas
 echo                     -CuentasCPE          Deja solo la cuenta AdministradorCPE (borra las demas)
 echo                     -SinClave            AdministradorCPE sin contrasena
 echo                     -OmitirOOBE          Equipos desplegados sin configuracion inicial de Windows
@@ -199,9 +221,19 @@ echo                     -Origen D:  -Nombre x  -Descripcion "y"  -Dividir
 echo                     Recovery y datos se anaden como PARTICION_n (-SinExtras para omitirlas)
 echo    desplegar  3   En Hiren's, equipo de destino. BORRA un disco y aplica una imagen.
 echo                     -Imagen ruta.wim  -Indice 1  -Disco 1  -Firmware UEFI/BIOS
+echo                     -NombreEquipo x  ^(por defecto el serial del equipo; si no sirve se pide^)
 echo    anadirparticiones  En Hiren's, equipo de referencia. Anade a un .wim ya capturado
 echo                     las particiones de recovery y datos (PARTICION_n) sin volver a
 echo                     capturar Windows:  -Origen C:  -Imagen ruta.wim
+echo    montar         Monta un indice de un .wim en una carpeta para modificarlo
+echo                     -Imagen ruta.wim  -Indice 1  -Montaje carpeta
+echo                     ^(por defecto Montaje\^<imagen^>_^<indice^> junto al script^)
+echo    guardar        Guarda en el .wim los cambios de la carpeta montada ^(sigue montada^)
+echo    desmontar      Desmonta la imagen:  -Montaje carpeta  -Guardar o -Descartar
+echo    inyectardrivers  Anade los drivers de la carpeta Drivers a la imagen montada
+echo    montadas       Lista las imagenes montadas y permite guardarlas o desmontarlas
+echo    repararmontajes  Vuelve a montar las que lo piden y limpia montajes huerfanos
+echo    limpiarcaches  Borra las caches de la GPU de la imagen montada ^(Error 1299^)
 echo.
 echo    -Auto          Sin preguntas ni pausas (lo usa la interfaz grafica).
 echo.
@@ -272,6 +304,20 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%PS1%" %OPCS% %EXTRA% -Scri
 set "RC=%errorlevel%"
 del "%PS1%" 2>nul
 del "%CPEPS%" 2>nul
+rem Codigo 4: hace falta reiniciar (idioma, actualizaciones...). No es un
+rem error: se ofrece reiniciar y Preparar se vuelve a abrir solo al iniciar
+rem sesion, con las mismas opciones. En modo -Auto lo gestiona la ventana.
+if "%RC%"=="4" if not "%AUTO%"=="1" (
+  echo.
+  echo [i] Hace falta REINICIAR el equipo para continuar. No es un error.
+  echo     Al volver a iniciar sesion con esta cuenta, Preparar continuara solo
+  echo     con las mismas opciones. Deja conectado el disco externo.
+  reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce" /v ImagenMaestra /t REG_SZ /d "\"%ComSpec%\" /c \"\"%SELF%\" preparar%OPCS%\"" /f >nul
+  set "R=S"
+  set /p R="Reiniciar ahora? S/N [S]: "
+  if /i not "!R!"=="N" shutdown /r /t 5 /c "ImagenMaestra: reinicio para continuar Preparar"
+  exit /b 4
+)
 call :pausa
 exit /b %RC%
 
@@ -393,9 +439,34 @@ set /p OK="Iniciar captura? S/N: "
 if /i not "%OK%"=="S" goto :cap_error
 
 :cap_iniciar
+rem --- Exclusiones ---------------------------------------
+rem  Las de siempre de DISM mas las caches de sombreadores de la GPU:
+rem  sus archivos llevan una etiqueta de seguridad que Windows no deja
+rem  restaurar y hacen fallar el montaje de la imagen (Error 1299).
+set "CFG=%TEMP%\ImagenMaestra_excluir.ini"
+set "LCACHE=%TEMP%\ImagenMaestra_caches.txt"
+> "%CFG%" (
+  echo [ExclusionList]
+  echo \$ntfs.log
+  echo \hiberfil.sys
+  echo \pagefile.sys
+  echo \swapfile.sys
+  echo "\System Volume Information"
+  echo \RECYCLER
+  echo \$Recycle.Bin
+  echo \Windows\CSC
+)
+call :lista_caches "%SRC%" > "%LCACHE%"
+set "NEXC=0"
+for /f "usebackq delims=" %%p in ("%LCACHE%") do if exist "%SRC%\%%p\" (
+  >> "%CFG%" echo "\%%p"
+  set /a NEXC+=1
+)
+del "%LCACHE%" 2>nul
+if not "%NEXC%"=="0" echo [i] Se excluyen %NEXC% carpetas de cache de sombreadores de la GPU.
 echo.
 echo Capturando... esto puede tardar entre 20 y 60 minutos.
-dism /Capture-Image /ImageFile:"%DEST%\%NOMBRE%.wim" /CaptureDir:%SRC%\ /Name:"%NOMBRE%" /Description:"%DESC%" /Compress:max /CheckIntegrity /Verify /ScratchDir:"%SCR%" /LogPath:"%LOGS%\captura_%NOMBRE%.log"
+dism /Capture-Image /ImageFile:"%DEST%\%NOMBRE%.wim" /CaptureDir:%SRC%\ /Name:"%NOMBRE%" /Description:"%DESC%" /Compress:max /CheckIntegrity /Verify /ConfigFile:"%CFG%" /ScratchDir:"%SCR%" /LogPath:"%LOGS%\captura_%NOMBRE%.log"
 if errorlevel 1 (
   echo.
   echo [X] DISM fallo. Revisa %LOGS%\captura_%NOMBRE%.log
@@ -778,9 +849,55 @@ if defined HAYEXTRA (
 echo [AVISO] No se pudo comprobar el tamano del disco; se continua sin esa comprobacion.
 :dep_plan_ok
 
+rem --- Nombre del equipo: su serial ------------------------
+rem  Se decide antes de borrar el disco. Si el serial no sirve como
+rem  nombre se avisa y se pide uno.
+if not exist "%PRTPS%" call :extraer_ps PRT "%PRTPS%"
+set "NOMEQ="
+if defined P_NOMEQUIPO set "NOMEQ=%P_NOMEQUIPO%"
+if defined NOMEQ goto :dep_validar_nombre
+for %%v in (N_SERIAL N_NOMBRE N_MOTIVO) do set "%%v="
+for /f "tokens=1* delims==" %%a in ('powershell -NoProfile -ExecutionPolicy Bypass -File "%PRTPS%" -Accion Nombre 2^>nul') do set "N_%%a=%%b"
+if defined N_NOMBRE (
+  set "NOMEQ=!N_NOMBRE!"
+  echo.
+  echo Nombre del equipo: !NOMEQ!   ^(serial !N_SERIAL!^)
+  goto :dep_validar_nombre
+)
+if not defined N_MOTIVO set "N_MOTIVO=No se pudo leer el serial del equipo."
+echo.
+echo [AVISO] !N_MOTIVO!
+if "%AUTO%"=="1" (
+  echo [X] Indica el nombre del equipo con -NombreEquipo.
+  goto :dep_error
+)
+:dep_pedir_nombre
+set "NOMEQ="
+set /p NOMEQ="Escribe el nombre para este equipo (hasta 15 letras, numeros o guiones): "
+:dep_validar_nombre
+rem Se comprueba con un archivo: en una tuberia CMD no expande !NOMEQ!.
+set "NOK="
+set "NOMTMP=%TEMP%\ImagenMaestra_nombre.txt"
+if not defined NOMEQ goto :dep_nombre_mal
+if not "!NOMEQ:~15!"=="" goto :dep_nombre_mal
+if "!NOMEQ:~-1!"=="-" goto :dep_nombre_mal
+> "%NOMTMP%" echo(!NOMEQ!
+findstr /r /i "^[a-z0-9][a-z0-9-]*$" "%NOMTMP%" >nul || goto :dep_nombre_mal
+findstr /r "^[0-9]*$" "%NOMTMP%" >nul && goto :dep_nombre_mal
+set "NOK=1"
+:dep_nombre_mal
+del "%NOMTMP%" 2>nul
+if defined NOK goto :dep_nombre_ok
+echo [X] Nombre no valido: "!NOMEQ!". Hasta 15 letras, numeros o guiones; no puede ser solo numeros.
+if "%AUTO%"=="1" goto :dep_error
+if defined P_NOMEQUIPO goto :dep_error
+goto :dep_pedir_nombre
+:dep_nombre_ok
+
 echo.
 echo ***********************************************************
 echo  ATENCION: se BORRARA TODO el contenido del disco %DISK%.
+echo  El equipo se llamara %NOMEQ%.
 if not "%NEXTRA%"=="0" echo  Se recrearan %NEXTRA% particiones de recovery o datos de la imagen.
 if "%PLANRED%"=="1" echo  Las particiones de datos se reduciran a lo que ocupan, sin perder archivos.
 echo ***********************************************************
@@ -856,7 +973,10 @@ if errorlevel 1 (
 )
 
 rem --- Drivers opcionales ----------------------------------
-if exist "%DRVDIR%\*" (
+rem  Solo si hay algun .inf: con la carpeta vacia DISM da error.
+set "HAYDRV="
+dir /s /b "%DRVDIR%\*.inf" >nul 2>&1 && set "HAYDRV=1"
+if defined HAYDRV (
   echo.
   echo Inyectando drivers de %DRVDIR%...
   dism /Image:%LW%:\ /Add-Driver /Driver:"%DRVDIR%" /Recurse /LogPath:"%LOGS%\drivers.log"
@@ -869,6 +989,17 @@ if exist "%RESP%" (
   echo Copiando archivo de respuesta para automatizar la configuracion inicial...
   if not exist "%LW%:\Windows\Panther" md "%LW%:\Windows\Panther"
   copy /y "%RESP%" "%LW%:\Windows\Panther\unattend.xml" >nul
+)
+
+rem --- Nombre del equipo -----------------------------------
+rem  Va en el unattend.xml que dejo Sysprep (o en Respuesta\unattend.xml
+rem  si se copio): Windows arranca ya con ese nombre.
+echo.
+echo Poniendo el nombre del equipo: %NOMEQ%
+powershell -NoProfile -ExecutionPolicy Bypass -File "%PRTPS%" -Accion PonerNombre -LetraWin %LW% -NombreEquipo "%NOMEQ%"
+if errorlevel 1 (
+  echo [X] No se pudo poner el nombre del equipo.
+  goto :dep_error
 )
 
 rem --- Arranque --------------------------------------------
@@ -908,6 +1039,499 @@ echo.
 echo Proceso cancelado o con errores.
 call :pausa
 exit /b 1
+
+
+rem ==========================================================
+rem  4) MONTAR Y MODIFICAR UNA IMAGEN .WIM
+rem  Monta un indice de un .wim en una carpeta vacia (lectura y
+rem  escritura) para cambiar archivos, inyectar drivers, etc.
+rem  Los cambios solo pasan al .wim al guardar (commit) o al
+rem  desmontar guardando. Funciona en Windows y en Hiren's.
+rem ==========================================================
+:montar
+setlocal
+title Montar imagen
+call :requiere_admin || exit /b 1
+set "IMGDIR=%BASE%Imagenes"
+set "LOGS=%BASE%Logs"
+if not exist "%LOGS%" md "%LOGS%"
+
+echo.
+echo ==========================================================
+echo    MONTAR UNA IMAGEN PARA MODIFICARLA
+echo ==========================================================
+
+rem --- Imagen ----------------------------------------------
+set "WIM="
+if defined P_IMAGEN set "WIM=%P_IMAGEN%"
+if defined WIM goto :mnt_tengo_wim
+if "%AUTO%"=="1" (
+  echo [X] Indica la imagen con -Imagen.
+  goto :mnt_error
+)
+echo.
+echo Imagenes disponibles en %IMGDIR%:
+set N=0
+for %%f in ("%IMGDIR%\*.wim") do (
+  set /a N+=1
+  set "IMG!N!=%%~ff"
+  echo    [!N!] %%~nxf
+)
+if %N%==0 echo    (ninguna)
+echo    [R] Escribir la ruta de otro archivo .wim
+:mnt_elegir_wim
+set "SEL="
+set /p SEL="Numero de la imagen o R: "
+if /i "%SEL%"=="R" goto :mnt_pedir_ruta
+set "WIM="
+if defined SEL set "WIM=!IMG%SEL%!"
+if not defined WIM goto :mnt_elegir_wim
+goto :mnt_tengo_wim
+:mnt_pedir_ruta
+set "WIM="
+set /p WIM="Ruta completa del .wim: "
+
+:mnt_tengo_wim
+if not defined WIM (
+  echo [X] No se indico ninguna imagen.
+  goto :mnt_error
+)
+set "WIM=%WIM:"=%"
+if not exist "%WIM%" (
+  echo [X] No existe la imagen !WIM!
+  goto :mnt_error
+)
+for %%f in ("%WIM%") do (
+  set "WIM=%%~ff"
+  set "NOMBRE=%%~nf"
+  set "EXT=%%~xf"
+  set "ATR=%%~af"
+)
+if /i not "%EXT%"==".wim" (
+  echo [X] Solo se pueden montar para modificar archivos .wim, no .esd ni .swm.
+  goto :mnt_error
+)
+if /i "%ATR:~1,1%"=="r" (
+  echo [X] La imagen es de solo lectura. Quitale ese atributo para poder guardar cambios.
+  goto :mnt_error
+)
+echo.
+echo Imagen: %WIM%
+dism /Get-ImageInfo /ImageFile:"%WIM%"
+if errorlevel 1 (
+  echo [X] No se pudo leer la imagen.
+  goto :mnt_error
+)
+
+rem --- Indice ----------------------------------------------
+rem  Se puede montar cualquier indice, tambien los PARTICION_n.
+set "IDX=1"
+if defined P_INDICE (set "IDX=%P_INDICE%") else (set /p IDX="Indice a montar [1]: ")
+echo %IDX%| findstr /r "^[0-9][0-9]*$" >nul || (
+  echo [X] Indice no valido: %IDX%
+  goto :mnt_error
+)
+dism /Get-ImageInfo /ImageFile:"%WIM%" /Index:%IDX% >nul 2>&1
+if errorlevel 1 (
+  echo [X] La imagen no tiene el indice %IDX%.
+  goto :mnt_error
+)
+
+rem --- Carpeta de montaje ----------------------------------
+set "MNT=%BASE%Montaje\%NOMBRE%_%IDX%"
+if defined P_MONTAJE set "MNT=%P_MONTAJE%"
+if defined P_MONTAJE goto :mnt_tengo_dir
+if "%AUTO%"=="1" goto :mnt_tengo_dir
+echo.
+echo Carpeta de montaje, vacia y en un disco NTFS [Enter = %MNT%]
+set /p MNT="Carpeta: "
+:mnt_tengo_dir
+set "MNT=%MNT:"=%"
+if "%MNT:~-1%"=="\" set "MNT=%MNT:~0,-1%"
+rem OneDrive intenta sincronizar los archivos de la imagen mientras se monta.
+echo "%MNT%"| findstr /i /c:"\OneDrive" >nul && (
+  echo [X] La carpeta de montaje no puede estar dentro de OneDrive. Usa por ejemplo C:\Montaje.
+  goto :mnt_error
+)
+dir /b /a "%MNT%" 2>nul | findstr "^" >nul && (
+  echo [X] La carpeta !MNT! no esta vacia. Elige una carpeta vacia o que no exista.
+  goto :mnt_error
+)
+
+echo.
+echo ----------------------------------------------------------
+echo  Imagen : %WIM%
+echo  Indice : %IDX%
+echo  Carpeta: %MNT%
+echo  Log    : %LOGS%\montar_%NOMBRE%_%IDX%.log
+echo ----------------------------------------------------------
+if "%AUTO%"=="1" goto :mnt_iniciar
+set "OK="
+set /p OK="Montar la imagen? S/N: "
+if /i not "%OK%"=="S" goto :mnt_error
+
+:mnt_iniciar
+if not exist "%MNT%" md "%MNT%"
+if not exist "%MNT%\" (
+  echo [X] No se pudo crear la carpeta !MNT!
+  goto :mnt_error
+)
+echo.
+echo Montando... con imagenes grandes puede tardar varios minutos.
+dism /Mount-Image /ImageFile:"%WIM%" /Index:%IDX% /MountDir:"%MNT%" /LogPath:"%LOGS%\montar_%NOMBRE%_%IDX%.log"
+set "RCM=%errorlevel%"
+if "%RCM%"=="0" goto :mnt_montada
+echo.
+echo [X] DISM no pudo montar la imagen ^(codigo %RCM%^). Log: %LOGS%\montar_%NOMBRE%_%IDX%.log
+if "%RCM%"=="1299" goto :mnt_err_etiqueta
+echo     La carpeta debe estar vacia y en un disco NTFS, y ese indice no puede estar ya montado.
+goto :mnt_err_limpiar
+:mnt_err_etiqueta
+echo     Error 1299: la imagen tiene archivos con una etiqueta de seguridad que
+echo     este Windows no deja restaurar. Suelen ser las caches de sombreadores
+echo     de la GPU ^(AMD\DxcCache, NVIDIA\DXCache...^) del perfil del sistema.
+echo     Solucion: monta la imagen desde Hiren's, elige "Borrar caches de la GPU"
+echo     y desmonta guardando. Despues ya se podra montar tambien en Windows.
+echo     Las imagenes capturadas con esta version ya no incluyen esas caches.
+:mnt_err_limpiar
+rem El montaje fallido deja archivos a medias y a veces un registro de
+rem montaje huerfano: se descartan y se borra la carpeta (estaba vacia).
+echo.
+echo Limpiando el montaje fallido...
+dism /Unmount-Image /MountDir:"%MNT%" /Discard >nul 2>&1
+dism /Cleanup-Mountpoints >nul 2>&1
+call :borrar_carpeta "%MNT%"
+if errorlevel 1 echo [AVISO] No se pudo borrar %MNT%. Usa otra carpeta para montar.
+goto :mnt_error
+
+:mnt_montada
+echo.
+echo [OK] Imagen montada en %MNT%
+echo     Lo que cambies en esa carpeta NO pasa al .wim hasta que elijas
+echo     "Guardar cambios" o "Desmontar guardando".
+if "%AUTO%"=="1" exit /b 0
+goto :mnt_gestionar
+
+rem --- Menu de una imagen montada (MNT = carpeta) -----------
+:mnt_gestionar
+echo.
+echo ----------------------------------------------------------
+echo  Imagen montada en: %MNT%
+echo ----------------------------------------------------------
+echo    [1] Abrir la carpeta
+echo    [2] Inyectar los drivers de la carpeta Drivers
+echo    [3] Guardar los cambios en el .wim (sigue montada)
+echo    [4] Desmontar GUARDANDO los cambios
+echo    [5] Desmontar DESCARTANDO los cambios
+echo    [6] Borrar caches de la GPU (arregla el Error 1299 al montar en Windows)
+echo    [0] Volver (la imagen sigue montada)
+echo.
+set "OP="
+set /p OP="Elige una opcion: "
+if "%OP%"=="0" exit /b 0
+if "%OP%"=="1" call :mnt_abrir
+if "%OP%"=="2" call :mnt_drivers
+if "%OP%"=="6" call :mnt_caches
+if "%OP%"=="3" call :mnt_guardar
+if "%OP%"=="4" (call :mnt_desmontar S & if not errorlevel 1 exit /b 0)
+if "%OP%"=="5" (
+  set "R=N"
+  set /p R="Se perderan los cambios no guardados. Seguro? S/N [N]: "
+  if /i "!R!"=="S" (call :mnt_desmontar N & if not errorlevel 1 exit /b 0)
+)
+goto :mnt_gestionar
+
+:mnt_error
+echo.
+echo Proceso cancelado o con errores.
+call :pausa
+exit /b 1
+
+
+rem --- Acciones sueltas (las usa la interfaz grafica) -------
+:guardar_montaje
+setlocal
+call :requiere_admin || exit /b 1
+set "LOGS=%BASE%Logs"
+if not exist "%LOGS%" md "%LOGS%"
+call :mnt_carpeta || goto :mnt_error
+call :mnt_guardar
+set "RC=%errorlevel%"
+call :pausa
+exit /b %RC%
+
+:desmontar
+setlocal
+call :requiere_admin || exit /b 1
+set "LOGS=%BASE%Logs"
+if not exist "%LOGS%" md "%LOGS%"
+call :mnt_carpeta || goto :mnt_error
+set "G=%P_GUARDAR%"
+if not defined G if "%AUTO%"=="1" (
+  echo [X] Indica -Guardar o -Descartar.
+  goto :mnt_error
+)
+if not defined G set "G=C"
+if /i "%G%"=="C" set /p G="Guardar los cambios? S = guardar, N = descartar, C = cancelar [C]: "
+if /i not "%G%"=="S" if /i not "%G%"=="N" goto :mnt_error
+call :mnt_desmontar %G%
+set "RC=%errorlevel%"
+call :pausa
+exit /b %RC%
+
+:inyectar_drivers
+setlocal
+call :requiere_admin || exit /b 1
+set "LOGS=%BASE%Logs"
+if not exist "%LOGS%" md "%LOGS%"
+call :mnt_carpeta || goto :mnt_error
+call :mnt_drivers
+set "RC=%errorlevel%"
+call :pausa
+exit /b %RC%
+
+:limpiar_caches
+setlocal
+call :requiere_admin || exit /b 1
+call :mnt_carpeta || goto :mnt_error
+call :mnt_caches
+set "RC=%errorlevel%"
+call :pausa
+exit /b %RC%
+
+:reparar_montajes
+setlocal
+call :requiere_admin || exit /b 1
+call :listar_montajes
+call :mnt_reparar
+call :pausa
+exit /b 0
+
+:montadas
+setlocal
+title Imagenes montadas
+call :requiere_admin || exit /b 1
+set "LOGS=%BASE%Logs"
+if not exist "%LOGS%" md "%LOGS%"
+:mtd_lista
+echo.
+echo ==========================================================
+echo    IMAGENES MONTADAS
+echo ==========================================================
+call :listar_montajes
+if "%AUTO%"=="1" exit /b 0
+echo.
+echo    [numero] Abrir, guardar o desmontar esa imagen
+echo    [R] Reparar: volver a montar las que lo piden y limpiar montajes huerfanos
+echo    [0] Volver
+echo.
+set "SEL="
+set /p SEL="Elige una opcion: "
+if "%SEL%"=="0" exit /b 0
+if /i "%SEL%"=="R" (call :mnt_reparar & goto :mtd_lista)
+if not defined SEL goto :mtd_lista
+set "MNT="
+set "MNT=!M%SEL%!"
+if not defined MNT goto :mtd_lista
+call :mnt_gestionar
+goto :mtd_lista
+
+
+rem --- Utilidades de montaje (usan MNT y LOGS del llamador) --
+:requiere_admin
+if "%ENPE%"=="1" exit /b 0
+fltmc >nul 2>&1
+if not errorlevel 1 exit /b 0
+echo [X] Hacen falta permisos de administrador: abre ImagenMaestra.cmd como administrador.
+call :pausa
+exit /b 1
+
+:listar_montajes
+rem Deja en M<n>, MF<n>, MI<n> y MS<n> carpeta, imagen, indice y estado.
+set NM=0
+for /f "tokens=1,2,3*" %%a in ('dism /English /Get-MountedImageInfo') do (
+  if /i "%%a %%b"=="Mount Dir" (
+    set /a NM+=1
+    set "M!NM!=%%d"
+    set "MF!NM!="
+    set "MI!NM!="
+    set "MS!NM!="
+  )
+  if /i "%%a %%b"=="Image File" set "MF!NM!=%%d"
+  if /i "%%a %%b"=="Image Index" set "MI!NM!=%%d"
+  if /i "%%a"=="Status" set "MS!NM!=%%c %%d"
+)
+if "%NM%"=="0" (
+  echo    No hay imagenes montadas.
+  exit /b 0
+)
+for /l %%i in (1,1,%NM%) do (
+  echo    [%%i] !M%%i!
+  echo         Imagen: !MF%%i!   Indice: !MI%%i!   Estado: !MS%%i!
+)
+exit /b 0
+
+:mnt_carpeta
+rem Deja en MNT la carpeta montada (-Montaje o elegida de la lista).
+set "MNT="
+if defined P_MONTAJE set "MNT=%P_MONTAJE%"
+if defined MNT goto :mntc_ok
+if "%AUTO%"=="1" (
+  echo [X] Indica la carpeta montada con -Montaje.
+  exit /b 1
+)
+echo.
+echo Imagenes montadas:
+call :listar_montajes
+if "%NM%"=="0" exit /b 1
+:mntc_elegir
+set "SEL="
+set /p SEL="Numero de la imagen montada [0 = cancelar]: "
+if "%SEL%"=="0" exit /b 1
+if not defined SEL goto :mntc_elegir
+set "MNT=!M%SEL%!"
+if not defined MNT goto :mntc_elegir
+:mntc_ok
+set "MNT=%MNT:"=%"
+if "%MNT:~-1%"=="\" set "MNT=%MNT:~0,-1%"
+exit /b 0
+
+:mnt_abrir
+if not exist "%MNT%\" (
+  echo [X] No existe la carpeta !MNT!
+  exit /b 1
+)
+start "" explorer.exe "%MNT%"
+exit /b 0
+
+:mnt_drivers
+set "DRVDIR=%BASE%Drivers"
+set "SCR=%BASE%Scratch"
+dir /s /b "%DRVDIR%\*.inf" >nul 2>&1 || (
+  echo [X] No hay drivers .inf en !DRVDIR!
+  exit /b 1
+)
+if not exist "%SCR%" md "%SCR%"
+echo.
+echo Inyectando drivers de %DRVDIR%...
+dism /Image:"%MNT%" /Add-Driver /Driver:"%DRVDIR%" /Recurse /ScratchDir:"%SCR%" /LogPath:"%LOGS%\montaje_drivers.log"
+set "RC=%errorlevel%"
+rmdir /s /q "%SCR%" 2>nul
+if not "%RC%"=="0" (
+  echo [AVISO] Algunos drivers no se pudieron agregar. Revisa !LOGS!\montaje_drivers.log
+  exit /b %RC%
+)
+echo [OK] Drivers inyectados. Recuerda guardar los cambios.
+exit /b 0
+
+:mnt_caches
+rem Borra de la imagen montada las caches de sombreadores de la GPU.
+set "LCACHE=%TEMP%\ImagenMaestra_caches.txt"
+call :lista_caches "%MNT%" > "%LCACHE%"
+set "NB=0"
+set "NF=0"
+echo.
+echo Buscando caches de la GPU en %MNT%...
+for /f "usebackq delims=" %%p in ("%LCACHE%") do if exist "!MNT!\%%p\" (
+  echo    Borrando \%%p
+  rmdir /s /q "!MNT!\%%p" 2>nul
+  if exist "!MNT!\%%p\" (set /a NF+=1) else (set /a NB+=1)
+)
+del "%LCACHE%" 2>nul
+if "%NB%%NF%"=="00" (
+  echo [OK] La imagen no tiene caches de la GPU.
+  exit /b 0
+)
+if not "%NF%"=="0" (
+  echo [X] No se pudieron borrar %NF% carpetas. Si estas en Windows, hazlo desde Hiren's.
+  exit /b 1
+)
+echo [OK] Borradas %NB% carpetas. Guarda los cambios o desmonta guardando.
+exit /b 0
+
+:borrar_carpeta
+rem %1 = carpeta. Los archivos que restaura DISM conservan los permisos de
+rem la imagen (solo SYSTEM o TrustedInstaller pueden borrarlos): se toma la
+rem propiedad y se da control total a Administradores antes de borrar.
+if not exist "%~1\" exit /b 0
+rmdir /s /q "%~1" 2>nul
+if not exist "%~1\" exit /b 0
+echo Tomando la propiedad de %~1 para poder borrarla...
+rem La respuesta de /D depende del idioma de Windows (S o Y).
+takeown /f "%~1" /r /d S >nul 2>&1 || takeown /f "%~1" /r /d Y >nul 2>&1
+icacls "%~1" /grant *S-1-5-32-544:F /t /c /q >nul 2>&1
+attrib -r -s -h "%~1\*" /s /d >nul 2>&1
+rmdir /s /q "%~1" 2>nul
+if exist "%~1\" exit /b 1
+exit /b 0
+
+:lista_caches
+rem %1 = raiz (C: o carpeta montada). Escribe, relativas a la raiz, las
+rem carpetas de cache de sombreadores de la GPU de cada perfil. Se pueden
+rem borrar sin problema: el driver las vuelve a crear.
+for %%r in ("Windows\System32\config\systemprofile" "Windows\ServiceProfiles\LocalService" "Windows\ServiceProfiles\NetworkService") do call :lista_caches_perfil "%%~r"
+for /f "delims=" %%u in ('dir /b /ad /a "%~1\Users" 2^>nul') do call :lista_caches_perfil "Users\%%u"
+exit /b 0
+:lista_caches_perfil
+for %%c in ("AMD\DxcCache" "AMD\DxCache" "AMD\GLCache" "AMD\VkCache" "NVIDIA\DXCache" "NVIDIA\GLCache" "NVIDIA Corporation\NV_Cache" "D3DSCache" "Intel\ShaderCache") do echo %~1\AppData\Local\%%~c
+echo %~1\AppData\LocalLow\NVIDIA\PerDriverVersion\DXCache
+exit /b 0
+
+:mnt_guardar
+echo.
+echo Guardando los cambios en el .wim... con imagenes grandes puede tardar.
+rem /CheckIntegrity rehace la tabla de integridad; sin ella fallaria
+rem el /CheckIntegrity del despliegue.
+dism /Commit-Image /MountDir:"%MNT%" /CheckIntegrity /LogPath:"%LOGS%\guardar_montaje.log"
+if errorlevel 1 (
+  echo [X] No se pudieron guardar los cambios. Revisa !LOGS!\guardar_montaje.log
+  exit /b 1
+)
+echo [OK] Cambios guardados en el .wim. La imagen sigue montada.
+exit /b 0
+
+:mnt_desmontar
+rem %1 = S guardar los cambios, N descartarlos
+echo.
+if /i "%~1"=="S" goto :mntd_guardar
+echo Desmontando y descartando los cambios...
+dism /Unmount-Image /MountDir:"%MNT%" /Discard /LogPath:"%LOGS%\desmontar.log"
+goto :mntd_fin
+:mntd_guardar
+echo Desmontando y guardando los cambios... con imagenes grandes puede tardar.
+dism /Unmount-Image /MountDir:"%MNT%" /Commit /CheckIntegrity /LogPath:"%LOGS%\desmontar.log"
+:mntd_fin
+if errorlevel 1 (
+  echo [X] No se pudo desmontar. Cierra las ventanas del Explorador y los programas
+  echo     que usen archivos de la carpeta y vuelve a intentarlo. Log: !LOGS!\desmontar.log
+  exit /b 1
+)
+rd "%MNT%" 2>nul
+echo [OK] Imagen desmontada.
+if /i "%~1"=="S" echo     El .wim crece al guardar; para recuperar espacio exporta los indices a un .wim nuevo con dism /Export-Image.
+exit /b 0
+
+:mnt_reparar
+rem Usa la lista de :listar_montajes.
+set "RN=0"
+for /l %%i in (1,1,%NM%) do (
+  if /i "!MS%%i:~0,5!"=="Needs" (
+    set /a RN+=1
+    echo.
+    echo Volviendo a montar !M%%i!...
+    dism /Remount-Image /MountDir:"!M%%i!"
+  )
+)
+if "%RN%"=="0" echo No hay imagenes que haya que volver a montar.
+echo.
+echo Limpiando montajes huerfanos o danados...
+dism /Cleanup-Mountpoints
+if errorlevel 1 (
+  echo [X] La limpieza fallo.
+  exit /b 1
+)
+echo [OK] Montajes revisados.
+exit /b 0
 
 
 rem ==========================================================
@@ -954,7 +1578,6 @@ rem ==========================================================
   ImagenMaestra.cmd > Capturar.
 
   Parametros opcionales:
-    -SinCopyProfile      No copiar el perfil personalizado al usuario por defecto.
     -QuitarAppsProblema  Desinstalar automaticamente las apps de la Store que
                          bloquean Sysprep (instaladas solo para un usuario).
     -LimpiezaProfunda    DISM StartComponentCleanup /ResetBase (lento, reduce
@@ -981,6 +1604,8 @@ rem ==========================================================
                          (es-MX), seguir con el idioma que tiene el equipo.
                          Sin esta opcion el proceso pregunta (consola) o
                          termina con codigo 3 (-Confirmado, interfaz grafica).
+    -SinFondoComun       No fijar el fondo de escritorio de esta cuenta como
+                         fondo obligatorio de todas las cuentas.
 
   La imagen siempre se deja en espanol latinoamericano (es-MX) como UNICO
   idioma: si falta se descarga (necesita internet), se fija como idioma de
@@ -988,7 +1613,6 @@ rem ==========================================================
   desinstalan los demas idiomas.
 #>
 param(
-    [switch]$SinCopyProfile,
     [switch]$QuitarAppsProblema,
     [switch]$LimpiezaProfunda,
     [switch]$Confirmado,
@@ -996,7 +1620,8 @@ param(
     [switch]$CuentasCPE,
     [switch]$SinClave,
     [switch]$OmitirOOBE,
-    [switch]$AceptarIdiomaActual
+    [switch]$AceptarIdiomaActual,
+    [switch]$SinFondoComun
 )
 
 $ErrorActionPreference = 'Stop'
@@ -1004,6 +1629,9 @@ function Paso($t)  { Write-Host "`n==> $t" -ForegroundColor Cyan }
 function Ok($t)    { Write-Host "   [OK] $t" -ForegroundColor Green }
 function Aviso($t) { Write-Host "   [!] $t" -ForegroundColor Yellow }
 function Fallo($t) { Write-Host "   [X] $t" -ForegroundColor Red; exit 1 }
+# Codigo 4: hace falta reiniciar para seguir. NO es un error: la ventana (o el
+# menu de texto) ofrece reiniciar y Preparar continua solo al iniciar sesion.
+function Reiniciar($t) { Write-Host "   [REINICIO] $t" -ForegroundColor Yellow; exit 4 }
 
 $sysprepDir = Join-Path $env:WINDIR 'System32\Sysprep'
 $unattend   = Join-Path $sysprepDir 'unattend.xml'
@@ -1055,7 +1683,7 @@ try {
 Paso "Comprobando reinicios pendientes"
 $pendiente = (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending') -or
              (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired')
-if ($pendiente) { Fallo "Hay un reinicio pendiente por actualizaciones. Reinicia el equipo y vuelve a ejecutar." }
+if ($pendiente) { Reiniciar "Hay un reinicio pendiente por actualizaciones de Windows." }
 Ok "Sin reinicios pendientes"
 
 # --- Almacenamiento reservado (error 0x800F0975) -------------------
@@ -1067,7 +1695,7 @@ dism.exe /Online /Set-ReservedStorageState /State:Disabled /Quiet | Out-Null
 if ($escenario -and $escenario -ne 0) {
     Set-ItemProperty $rm -Name ActiveScenario -Value 0 -Type DWord
     Aviso "El almacenamiento reservado estaba en uso (ActiveScenario=$escenario). Se ha desactivado."
-    Fallo "REINICIA el equipo y vuelve a ejecutar este script."
+    Reiniciar "Se desactivo el almacenamiento reservado de Windows."
 }
 Ok "Almacenamiento reservado desactivado"
 
@@ -1209,7 +1837,7 @@ if ($errorIdioma) {
     # Windows solo pasa a es-MX tras reiniciar. Hasta entonces no se puede
     # quitar el idioma anterior (esta en uso) ni generalizar.
     if ($reiniciarIdioma -or (Get-UICulture).Name -ne $idiomaES) {
-        Fallo "Idioma $idiomaES instalado y fijado. REINICIA el equipo, inicia sesion con esta misma cuenta, desconecta internet y vuelve a ejecutar Preparar."
+        Reiniciar "Idioma $idiomaES instalado y fijado: Windows lo aplica al reiniciar. Inicia sesion con esta misma cuenta y desconecta internet."
     }
 
     # Dejar es-MX como UNICO idioma: se desinstalan los demas.
@@ -1227,7 +1855,7 @@ if ($errorIdioma) {
                 }
             }
             if ($quitados -and (Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending')) {
-                Fallo "Se desinstalaron otros idiomas y Windows pide reiniciar. REINICIA el equipo y vuelve a ejecutar Preparar."
+                Reiniciar "Se desinstalaron los otros idiomas y Windows pide reiniciar para terminar de quitarlos."
             }
         } else {
             Aviso "Este Windows no tiene Uninstall-Language: siguen instalados $($otros -join ', '), pero sin usarse."
@@ -1464,6 +2092,53 @@ if ($CuentasCPE) {
     Ok "Cuentas habilitadas ahora: $($restantes -join ', ')"
 }
 
+# --- Fondo de escritorio comun ------------------------------------
+# El fondo de esta cuenta (la que pasa a ser AdministradorCPE) se copia a
+# Windows\Web, que todas las cuentas pueden leer, y se fija con la directiva
+# del equipo: todas las cuentas, tambien las que se creen despues, lo ven y
+# no lo pueden cambiar.
+if (-not $SinFondoComun) {
+    Paso "Fondo de escritorio de $env:USERNAME para todas las cuentas"
+    $esc = Get-ItemProperty 'HKCU:\Control Panel\Desktop' -ErrorAction SilentlyContinue
+    $dirFondo = Join-Path $env:WINDIR 'Web\Wallpaper\CPE'
+    $origen = [string]$esc.WallPaper
+    # Si el fondo apunta a un archivo que ya no existe (o es una
+    # presentacion o Windows destacado) se usa la copia que guarda Windows
+    # de la imagen que se ve ahora.
+    if (-not $origen -or -not (Test-Path -LiteralPath $origen)) {
+        $tc = Join-Path $env:APPDATA 'Microsoft\Windows\Themes\TranscodedWallpaper'
+        if (Test-Path -LiteralPath $tc) { $origen = $tc } else { $origen = '' }
+    }
+    if (-not $origen) {
+        Aviso "No se encontro el fondo de $env:USERNAME (puede ser un color solido); no se fija un fondo comun."
+    } else {
+        New-Item -ItemType Directory -Force -Path $dirFondo | Out-Null
+        $ext = [IO.Path]::GetExtension($origen).ToLower()
+        if (-not $ext) { $ext = '.jpg' }
+        $destino = Join-Path $dirFondo "fondo$ext"
+        if ($origen -ne $destino) {
+            Get-ChildItem -LiteralPath $dirFondo -Filter 'fondo.*' -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+            Copy-Item -LiteralPath $origen -Destination $destino -Force
+        }
+        # Mismo ajuste que tiene la cuenta (rellenar si no se sabe).
+        # Directiva: 0 centrar, 1 mosaico, 2 expandir, 3 ajustar, 4 rellenar, 5 extender.
+        $estilo = '4'
+        switch ("$($esc.WallpaperStyle)") {
+            '0'  { if ("$($esc.TileWallpaper)" -eq '1') { $estilo = '1' } else { $estilo = '0' } }
+            '2'  { $estilo = '2' }
+            '6'  { $estilo = '3' }
+            '10' { $estilo = '4' }
+            '22' { $estilo = '5' }
+        }
+        # La clave ya existe (guarda la configuracion de UAC): no se recrea.
+        $pol = 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System'
+        if (-not (Test-Path $pol)) { New-Item -Path $pol | Out-Null }
+        Set-ItemProperty -Path $pol -Name 'Wallpaper' -Value $destino -Type String
+        Set-ItemProperty -Path $pol -Name 'WallpaperStyle' -Value $estilo -Type String
+        Ok "Fondo comun fijado para todas las cuentas: $destino"
+    }
+}
+
 # --- Limpieza -----------------------------------------------------
 Paso "Limpiando temporales y papelera"
 # Se recorre cada carpeta con -LiteralPath en vez de usar comodines: con
@@ -1482,6 +2157,29 @@ foreach ($carpeta in @($env:TEMP, (Join-Path $env:WINDIR 'Temp'))) {
     if ($fallidos) { Write-Host "   [i] $fallidos archivo(s) en uso se dejaron en $carpeta" -ForegroundColor DarkGray }
 }
 try { Clear-RecycleBin -Force -ErrorAction Stop } catch { }
+
+# Caches de sombreadores de la GPU: sus archivos llevan una etiqueta de
+# seguridad que Windows no deja restaurar y hacen fallar el montaje de la
+# imagen (Error 1299). El driver las vuelve a crear.
+$perfiles = @(
+    (Join-Path $env:WINDIR 'System32\config\systemprofile'),
+    (Join-Path $env:WINDIR 'ServiceProfiles\LocalService'),
+    (Join-Path $env:WINDIR 'ServiceProfiles\NetworkService'))
+$perfiles += @(Get-ChildItem -LiteralPath (Join-Path $env:SystemDrive 'Users') -Directory -Force -ErrorAction SilentlyContinue |
+    Where-Object { -not ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) } | ForEach-Object { $_.FullName })
+$caches = @('AMD\DxcCache', 'AMD\DxCache', 'AMD\GLCache', 'AMD\VkCache', 'NVIDIA\DXCache', 'NVIDIA\GLCache',
+    'NVIDIA Corporation\NV_Cache', 'D3DSCache', 'Intel\ShaderCache')
+$nCache = 0; $nCacheFallo = 0
+foreach ($p in $perfiles) {
+    $rutas = @($caches | ForEach-Object { Join-Path $p "AppData\Local\$_" }) + (Join-Path $p 'AppData\LocalLow\NVIDIA\PerDriverVersion\DXCache')
+    foreach ($r in $rutas) {
+        if (-not (Test-Path -LiteralPath $r)) { continue }
+        try   { Remove-Item -LiteralPath $r -Recurse -Force -ErrorAction Stop; $nCache++ }
+        catch { $nCacheFallo++ }
+    }
+}
+if ($nCache) { Ok "Caches de la GPU borradas: $nCache carpeta(s)" }
+if ($nCacheFallo) { Write-Host "   [i] $nCacheFallo cache(s) de la GPU en uso; la captura las excluye igualmente" -ForegroundColor DarkGray }
 Ok "Limpieza basica hecha"
 
 if ($LimpiezaProfunda) {
@@ -1490,32 +2188,12 @@ if ($LimpiezaProfunda) {
     if ($LASTEXITCODE -ne 0) { Aviso "DISM devolvio codigo $LASTEXITCODE; se continua." } else { Ok "Componentes limpiados" }
 }
 
-# --- unattend.xml (CopyProfile) -----------------------------------
+# --- unattend.xml -------------------------------------------------
 $argsSysprep = @('/generalize', '/oobe', '/shutdown', '/quiet')
-# CopyProfile solo es seguro desde la cuenta Administrador integrada (modo
-# auditoria, SID terminado en -500). Desde una cuenta normal copia tambien su
-# idioma, paquetes por usuario y estado de la Store al perfil por defecto, y la
-# configuracion inicial de los equipos desplegados puede quedar en bucle.
-$esAdminIntegrado = $id.User.Value -like 'S-1-5-21-*-500'
-if (-not $SinCopyProfile -and -not $esAdminIntegrado) {
-    Paso "CopyProfile"
-    Aviso "Se OMITE CopyProfile: la cuenta actual ($env:USERNAME) no es el Administrador integrado del modo auditoria."
-    Aviso "Para copiar la personalizacion, personaliza en modo auditoria (Ctrl+Shift+F3 en la primera pantalla de region)."
-    $SinCopyProfile = $true
-}
 Remove-Item $unattend -Force -ErrorAction SilentlyContinue
 
 $comp = 'processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS"'
 $pases = @()
-if (-not $SinCopyProfile) {
-    $pases += @"
-  <settings pass="specialize">
-    <component name="Microsoft-Windows-Shell-Setup" $comp>
-      <CopyProfile>true</CopyProfile>
-    </component>
-  </settings>
-"@
-}
 # Idioma de la configuracion inicial: con la imagen en es-MX se fija siempre,
 # para que los equipos desplegados no arranquen en otro idioma.
 # Sin configuracion inicial: los equipos desplegados arrancan directo al
@@ -1570,7 +2248,6 @@ if ($pases.Count) {
      '<unattend xmlns="urn:schemas-microsoft-com:unattend">' + "`r`n" +
      ($pases -join "`r`n") + "`r`n" + '</unattend>') | Set-Content -Path $unattend -Encoding UTF8
     $argsSysprep += "/unattend:$unattend"
-    if (-not $SinCopyProfile) { Ok "CopyProfile activado" }
     if ($OmitirOOBE) { Ok "Configuracion inicial omitida en los equipos desplegados (idioma $($uiCult.Name), teclado $teclado, zona $zona)" }
     elseif ($idiomaOK) { Ok "Configuracion inicial de los equipos desplegados en $idiomaES (teclado $teclado)" }
     Ok "unattend.xml creado en $unattend"
@@ -1588,6 +2265,10 @@ if (-not $Confirmado) {
 # La marca de exito se borra antes para saber si ESTA ejecucion funciono.
 $marca = Join-Path $sysprepDir 'Sysprep_succeeded.tag'
 Remove-Item $marca -Force -ErrorAction SilentlyContinue
+
+# Que la continuacion automatica tras un reinicio no quede dentro de la imagen.
+try { Remove-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce' -Name 'ImagenMaestra' -ErrorAction Stop } catch {}
+try { Remove-Item -LiteralPath (Join-Path $env:LOCALAPPDATA 'ImagenMaestra_reanudar.xml') -Force -ErrorAction Stop } catch {}
 
 Paso "Ejecutando Sysprep"
 Get-Process sysprep -ErrorAction SilentlyContinue | Stop-Process -Force
@@ -1660,6 +2341,10 @@ $script:indices     = @()
 $script:discoUsb    = $null
 $script:prepArgs    = ''
 $script:prepClave   = $null
+# Continuacion de Preparar tras un reinicio (codigo 4): opciones guardadas
+# (la contrasena sigue cifrada con DPAPI) y entrada RunOnce que reabre la ventana.
+$archivoReanudar = Join-Path $env:LOCALAPPDATA 'ImagenMaestra_reanudar.xml'
+$claveRunOnce    = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\RunOnce'
 
 function TamanoTexto([double]$b) {
     if ($b -ge 1TB) { return ('{0:N1} TB' -f ($b / 1TB)) }
@@ -1793,7 +2478,9 @@ $tpCap = New-Object Windows.Forms.TabPage
 $tpCap.Text = '  2. Capturar imagen  '
 $tpDep = New-Object Windows.Forms.TabPage
 $tpDep.Text = '  3. Desplegar imagen  '
-foreach ($tp in $tpPrep, $tpCap, $tpDep) { $tp.UseVisualStyleBackColor = $true; $tabs.TabPages.Add($tp) }
+$tpMnt = New-Object Windows.Forms.TabPage
+$tpMnt.Text = '  4. Montar y modificar  '
+foreach ($tp in $tpPrep, $tpCap, $tpDep, $tpMnt) { $tp.UseVisualStyleBackColor = $true; $tabs.TabPages.Add($tp) }
 $form.Controls.Add($tabs)
 
 # --- Cabecera ------------------------------------------------------
@@ -1817,7 +2504,7 @@ $t = Etiqueta $tpPrep ('Se ejecuta en el Windows del EQUIPO DE REFERENCIA ya per
     'limpia y ejecuta Sysprep (/generalize /oobe /shutdown).') 15 12 850 36
 $chkApps   = Casilla $tpPrep 'Quitar automaticamente las apps de la Store que bloquean Sysprep' 15 56 $false
 $chkLimp   = Casilla $tpPrep 'Limpieza profunda de componentes (lenta; reduce el tamano de la imagen)' 15 82 $false
-$chkCopy   = Casilla $tpPrep 'Copiar el perfil personalizado al usuario por defecto (CopyProfile)' 15 108 $true
+$chkFondo  = Casilla $tpPrep 'Fondo de esta cuenta en todas las cuentas (obligatorio)' 15 108 $true
 $chkCuentas = Casilla $tpPrep 'Dejar SOLO la cuenta AdministradorCPE. Contrasena:' 15 134 $true
 $txtClave1 = Poner $tpPrep (New-Object Windows.Forms.TextBox) 410 132 120 23
 $txtClave1.UseSystemPasswordChar = $true
@@ -1835,7 +2522,7 @@ $lblPrepAv.ForeColor = $naranja
 $btnPreparar = Boton $tpPrep 'Preparar y ejecutar Sysprep' 15 232 260 40
 $btnPreparar.Font = $fuenteNegr
 if ($enPE) {
-    foreach ($c in $chkApps, $chkLimp, $chkCopy, $chkCuentas, $txtClave1, $txtClave2, $chkSinClave, $chkOobe, $btnPreparar) { $c.Enabled = $false }
+    foreach ($c in $chkApps, $chkLimp, $chkFondo, $chkCuentas, $txtClave1, $txtClave2, $chkSinClave, $chkOobe, $btnPreparar) { $c.Enabled = $false }
     $lblPrepAv.Text = "Esta opcion se ejecuta en el Windows del equipo de referencia, no en Hiren's."
     $lblPrepAv.ForeColor = $gris
 }
@@ -1890,6 +2577,46 @@ $btnDesplegar.Font = $fuenteNegr
 $btnDesplegar.ForeColor = $rojo
 $lblReq = Etiqueta $tpDep '' 15 252 860 20
 $lblReq.AutoEllipsis = $true
+$t = Etiqueta $tpDep 'Nombre del equipo:' 15 283
+$t.Font = $fuenteNegr
+$txtNomEq = Poner $tpDep (New-Object Windows.Forms.TextBox) 145 280 160 23
+$txtNomEq.MaxLength = 15
+$txtNomEq.CharacterCasing = 'Upper'
+$lblNomEq = Etiqueta $tpDep '' 315 283 560 20
+$lblNomEq.AutoEllipsis = $true
+
+# ==================================================================
+#  Pestana 4: Montar y modificar
+# ==================================================================
+[void](Etiqueta $tpMnt 'Imagen:' 15 15)
+$cmbMImg = Poner $tpMnt (New-Object Windows.Forms.ComboBox) 85 12 400 23
+$cmbMImg.DropDownStyle = 'DropDownList'
+$cmbMImg.DropDownWidth = 600
+$btnMExaminar = Boton $tpMnt 'Examinar...' 495 11 95 25
+$btnMActImg = Boton $tpMnt 'Actualizar' 595 11 95 25
+[void](Etiqueta $tpMnt 'Indice:' 15 47)
+$cmbMIdx = Poner $tpMnt (New-Object Windows.Forms.ComboBox) 85 44 400 23
+$cmbMIdx.DropDownStyle = 'DropDownList'
+[void](Etiqueta $tpMnt 'Carpeta:' 15 79)
+$txtMnt = Poner $tpMnt (New-Object Windows.Forms.TextBox) 85 76 400 23
+$btnMCarpeta = Boton $tpMnt 'Elegir...' 495 75 95 25
+$btnMontar = Boton $tpMnt 'Montar imagen' 710 11 165 45
+$btnMontar.Font = $fuenteNegr
+$t = Etiqueta $tpMnt 'Los cambios pasan al .wim solo al guardar o al desmontar guardando.' 710 60 165 45
+$t.ForeColor = $gris
+[void](Etiqueta $tpMnt 'Imagenes montadas en este equipo:' 15 110)
+$lvMnt = Lista $tpMnt 15 130 680 140 @(@('Carpeta', 250), @('Imagen', 250), @('Indice', 55), @('Estado', 110))
+$btnMActLista = Boton $tpMnt 'Actualizar lista' 710 130 165 26
+$btnMAbrir = Boton $tpMnt 'Abrir carpeta' 710 159 165 26
+$btnMDrivers = Boton $tpMnt 'Inyectar drivers' 710 188 165 26
+$btnMGuardar = Boton $tpMnt 'Guardar cambios' 710 217 165 26
+$btnMDesGuardar = Boton $tpMnt 'Desmontar guardando' 710 246 165 26
+$btnMDesDescartar = Boton $tpMnt 'Desmontar descartando' 710 275 165 26
+$btnMDesDescartar.ForeColor = $rojo
+$btnMReparar = Boton $tpMnt 'Reparar montajes' 15 276 165 26
+$btnMCaches = Boton $tpMnt 'Borrar caches de la GPU' 190 276 175 26
+$t = Etiqueta $tpMnt 'Si al montar en Windows sale el Error 1299: monta en Hiren''s, borra las caches y desmonta guardando.' 375 274 320 32
+$t.ForeColor = $gris
 
 # ==================================================================
 #  Registro de salida
@@ -2038,6 +2765,11 @@ function Terminar-Accion {
     $acc = $script:accion
     $clavePrep = $script:prepClave
     $script:prepClave = $null
+    if (@('Montar', 'Guardar cambios', 'Desmontar', 'Inyectar drivers', 'Reparar montajes') -contains $acc) { Cargar-Montajes }
+    # La continuacion tras reinicio solo se conserva si se vuelve a pedir reiniciar.
+    if ($acc -eq 'Preparar' -and ($script:cancelado -or $codigo -ne 4)) {
+        Remove-Item -LiteralPath $archivoReanudar -Force -ErrorAction SilentlyContinue
+    }
 
     if ($script:cancelado) {
         $barra.Value = 0
@@ -2065,7 +2797,60 @@ function Terminar-Accion {
             try { Set-Content -LiteralPath (Join-Path $env:TEMP 'ImagenMaestra_cpe_clave.txt') -Value $clavePrep.Trim() -Encoding ASCII }
             catch { Informar "No se pudo preparar la contrasena: $($_.Exception.Message)" 'Error'; return }
         }
-        Iniciar-Accion 'Preparar' ($script:prepArgs + ' -AceptarIdiomaActual')
+        $script:prepArgs  = $script:prepArgs + ' -AceptarIdiomaActual'
+        $script:prepClave = $clavePrep
+        Iniciar-Accion 'Preparar' $script:prepArgs
+        return
+    }
+    # Codigo 4 de Preparar: hace falta reiniciar (idioma, actualizaciones,
+    # almacenamiento reservado). NO es un error: se guardan las opciones, se
+    # registra RunOnce para reabrir la ventana y se ofrece reiniciar.
+    if ($acc -eq 'Preparar' -and $codigo -eq 4) {
+        $barra.Value = 0
+        $motivo = 'Windows necesita reiniciar.'
+        try {
+            $l = @(Get-Content -LiteralPath $salida -ErrorAction Stop | Where-Object { $_ -match '\[REINICIO\]' })
+            if ($l.Count) { $motivo = ($l[-1] -replace '^.*\[REINICIO\]\s*', '').Trim() }
+        } catch {}
+        # Si pide reiniciar 3 veces seguidas por lo mismo, algo no se aplica: se para.
+        $intentos = 1
+        try {
+            if (Test-Path -LiteralPath $archivoReanudar) {
+                $ant = Import-Clixml -LiteralPath $archivoReanudar
+                if ("$($ant.Motivo)" -eq $motivo) { $intentos = [int]$ant.Intentos + 1 }
+            }
+        } catch {}
+        if ($intentos -ge 3) {
+            Remove-Item -LiteralPath $archivoReanudar -Force -ErrorAction SilentlyContinue
+            Escribir "[X] Preparar ha pedido reiniciar $intentos veces seguidas por lo mismo: $motivo"
+            $lblEstado.Text = 'Preparar detenido: pide reiniciar una y otra vez.'
+            Informar ("Preparar ha pedido reiniciar $intentos veces seguidas por el mismo motivo:`n$motivo`n`n" +
+                "El cambio no se esta aplicando. Revisa el registro de la ventana. La continuacion automatica se ha desactivado.") 'Error'
+            return
+        }
+        try {
+            [pscustomobject]@{ Args = $script:prepArgs; Clave = $clavePrep; Intentos = $intentos; Motivo = $motivo } |
+                Export-Clixml -LiteralPath $archivoReanudar -ErrorAction Stop
+            if (-not (Test-Path $claveRunOnce)) { New-Item -Path $claveRunOnce -Force -ErrorAction Stop | Out-Null }
+            Set-ItemProperty -Path $claveRunOnce -Name 'ImagenMaestra' -Value ('"{0}" /c ""{1}" gui"' -f $env:ComSpec, $Script) -ErrorAction Stop
+        } catch {
+            Escribir "[!] Hace falta reiniciar: $motivo"
+            Informar ("Hace falta reiniciar el equipo:`n$motivo`n`nNo se pudo programar la continuacion automatica ($($_.Exception.Message)). " +
+                "Reinicia y vuelve a pulsar Preparar con las mismas opciones.") 'Warning'
+            return
+        }
+        Escribir "[i] Hace falta REINICIAR para continuar (no es un error): $motivo"
+        Escribir '[i] Al volver a iniciar sesion con esta cuenta, la ventana se abrira y Preparar continuara con las mismas opciones.'
+        $lblEstado.Text = 'Preparar: hace falta reiniciar (no es un error).'
+        $si = Preguntar ("Hace falta reiniciar el equipo para continuar (no es un error):`n$motivo`n`n" +
+            "Al volver a iniciar sesion con la cuenta $env:USERNAME se abrira esta ventana y Preparar continuara " +
+            "con las mismas opciones. Deja conectado el disco externo.`n`nReiniciar ahora?")
+        if ($si) {
+            & shutdown.exe /r /t 5 /c 'ImagenMaestra: reinicio para continuar Preparar'
+            Escribir '[i] Reiniciando en 5 segundos...'
+        } else {
+            Escribir '[i] Reinicia cuando quieras: Preparar continuara al iniciar sesion.'
+        }
         return
     }
     if ($codigo -eq 0) {
@@ -2079,6 +2864,11 @@ function Terminar-Accion {
             'Capturar' {
                 Cargar-Imagenes
                 Informar "Imagen capturada correctamente en:`n$dirImg"
+            }
+            'Montar' {
+                if (Preguntar "Imagen montada en:`n$($script:ultMontaje)`n`nModifica los archivos de esa carpeta y despues usa Guardar cambios o Desmontar guardando.`n`nAbrir la carpeta ahora?") {
+                    try { Start-Process explorer.exe -ArgumentList "`"$($script:ultMontaje)`"" } catch {}
+                }
             }
             'Desplegar' {
                 if (Preguntar "Despliegue terminado.`n`nRetira el USB y el disco externo antes de que arranque Windows.`n`nReiniciar ahora?") {
@@ -2297,11 +3087,138 @@ function Confirmar-Borrado($d, [string]$nota = '') {
     return ($r -eq 'OK')
 }
 
+# Pestana 3: el nombre del equipo es su serial. Si no sirve, se avisa y
+# hay que escribirlo.
+$script:serialEq = $null
+function Cargar-NombreEquipo {
+    $txtNomEq.Text = ''
+    if (-not $script:prtOk) {
+        $lblNomEq.Text = 'No se pudo leer el serial: escribe el nombre del equipo.'
+        $lblNomEq.ForeColor = $naranja
+        return
+    }
+    $script:serialEq = Serial-Del-Equipo
+    if ($script:serialEq.Nombre) {
+        $txtNomEq.Text = $script:serialEq.Nombre
+        $lblNomEq.Text = "Serial del equipo: $($script:serialEq.Serial)"
+        $lblNomEq.ForeColor = $gris
+    } else {
+        $lblNomEq.Text = "$($script:serialEq.Motivo) Escribe el nombre del equipo."
+        $lblNomEq.ForeColor = $naranja
+    }
+}
+function NombreEq-Valido([string]$n) {
+    if ($script:prtOk) { return (Nombre-Valido $n) }
+    return ($n -match '^[A-Za-z0-9-]{1,15}$' -and $n -notmatch '^\d+$' -and $n -notmatch '^-|-$')
+}
+
 function Avisar-Si-No-PE {
     if ($enPE) { return $true }
     return (Preguntar ("Esta opcion esta pensada para ejecutarse desde Hiren's BootCD PE y parece " +
         "que estas en un Windows normal.`n`nContinuar de todos modos?") 'Warning' $true)
 }
+
+# --- Pestana 4: imagenes para montar e imagenes montadas -----------
+# Las de la carpeta Imagenes y las elegidas con "Examinar...".
+$script:mImagenes = @()
+$script:mExtra    = @()
+$script:mIndices  = @()
+$script:ultMontaje = ''
+
+function Cargar-MImagenes([string]$elegir = '') {
+    $cmbMImg.Items.Clear()
+    $lista = @()
+    if (Test-Path $dirImg) { $lista += @(Get-ChildItem $dirImg -Filter *.wim -File | Sort-Object Name | ForEach-Object { $_.FullName }) }
+    foreach ($e in $script:mExtra) { if ($lista -notcontains $e -and (Test-Path -LiteralPath $e)) { $lista += $e } }
+    $script:mImagenes = $lista
+    foreach ($p in $lista) {
+        $txt = $p
+        if ((Split-Path -Parent $p) -eq $dirImg) { $txt = Split-Path -Leaf $p }
+        $tam = ''; try { $tam = TamanoTexto (Get-Item -LiteralPath $p).Length } catch {}
+        [void]$cmbMImg.Items.Add(('{0}   ({1})' -f $txt, $tam))
+    }
+    if ($lista.Count) {
+        $i = 0
+        for ($k = 0; $k -lt $lista.Count; $k++) { if ($elegir -and $lista[$k] -eq $elegir) { $i = $k } }
+        $cmbMImg.SelectedIndex = $i
+    } else {
+        $cmbMIdx.Items.Clear()
+        $script:mIndices = @()
+        Actualizar-MCarpeta
+    }
+}
+
+# Todos los indices, tambien los PARTICION_n: cualquiera se puede montar.
+function Cargar-MIndices {
+    $cmbMIdx.Items.Clear()
+    $script:mIndices = @()
+    $i = $cmbMImg.SelectedIndex
+    if ($i -lt 0) { Actualizar-MCarpeta; return }
+    $wim = $script:mImagenes[$i]
+    $form.Cursor = 'WaitCursor'
+    try { $out = & dism.exe /English /Get-ImageInfo "/ImageFile:$wim" } catch { $out = @() }
+    finally { $form.Cursor = 'Default' }
+    $idx = $null
+    foreach ($l in $out) {
+        $l = [string]$l
+        if ($l -match '^\s*Index\s*:\s*(\d+)') { $idx = $matches[1] }
+        elseif ($idx -and $l -match '^\s*Name\s*:\s*(.*)$') {
+            $script:mIndices += $idx
+            [void]$cmbMIdx.Items.Add(('{0} - {1}' -f $idx, $matches[1].Trim()))
+            $idx = $null
+        }
+    }
+    if (-not $script:mIndices.Count) { $script:mIndices = @('1'); [void]$cmbMIdx.Items.Add('1') }
+    $cmbMIdx.SelectedIndex = 0
+}
+
+# Carpeta por defecto: Montaje\<imagen>_<indice> junto al script.
+function Actualizar-MCarpeta {
+    $i = $cmbMImg.SelectedIndex
+    if ($i -lt 0 -or $cmbMIdx.SelectedIndex -lt 0) { $txtMnt.Text = ''; return }
+    $n = [IO.Path]::GetFileNameWithoutExtension($script:mImagenes[$i])
+    $txtMnt.Text = Join-Path $base ('Montaje\{0}_{1}' -f $n, $script:mIndices[$cmbMIdx.SelectedIndex])
+}
+
+function Leer-Montajes {
+    $r = @()
+    try { $out = & dism.exe /English /Get-MountedImageInfo } catch { $out = @() }
+    $m = $null
+    foreach ($l in $out) {
+        $l = [string]$l
+        if ($l -match '^\s*Mount Dir\s*:\s*(.+)$') {
+            $m = New-Object PSObject -Property @{ Dir = $matches[1].Trim(); Imagen = ''; Indice = ''; Estado = '' }
+            $r += $m
+        }
+        elseif ($m -and $l -match '^\s*Image File\s*:\s*(.+)$') { $m.Imagen = $matches[1].Trim() }
+        elseif ($m -and $l -match '^\s*Image Index\s*:\s*(\d+)') { $m.Indice = $matches[1] }
+        elseif ($m -and $l -match '^\s*Status\s*:\s*(.+)$') { $m.Estado = $matches[1].Trim() }
+    }
+    $r
+}
+
+function Cargar-Montajes {
+    $form.Cursor = 'WaitCursor'
+    try {
+        $lvMnt.Items.Clear()
+        foreach ($m in @(Leer-Montajes)) {
+            $it = New-Object Windows.Forms.ListViewItem($m.Dir)
+            foreach ($s in $m.Imagen, $m.Indice, $m.Estado) { [void]$it.SubItems.Add([string]$s) }
+            if ($m.Estado -ne 'Ok') { $it.ForeColor = $naranja }
+            $it.Tag = $m
+            [void]$lvMnt.Items.Add($it)
+        }
+        if ($lvMnt.Items.Count) { $lvMnt.Items[0].Selected = $true }
+    } finally { $form.Cursor = 'Default' }
+}
+
+function Montaje-Elegido {
+    if ($lvMnt.SelectedItems.Count -eq 0) { Informar 'Elige una imagen montada de la lista.' 'Warning'; return $null }
+    return $lvMnt.SelectedItems[0].Tag
+}
+
+# Las rutas viajan en la linea de comandos de CMD.
+function Ruta-Valida([string]$p) { return ($p -notmatch '["&%!^<>|]') }
 
 # ==================================================================
 #  Eventos
@@ -2310,7 +3227,7 @@ $btnPreparar.Add_Click({
     $a = 'preparar'
     if ($chkApps.Checked) { $a += ' -QuitarAppsProblema' }
     if ($chkLimp.Checked) { $a += ' -LimpiezaProfunda' }
-    if (-not $chkCopy.Checked) { $a += ' -SinCopyProfile' }
+    if (-not $chkFondo.Checked) { $a += ' -SinFondoComun' }
     $extra = ''
     if ($chkCuentas.Checked) {
         $admCPE = Get-LocalUser -Name 'AdministradorCPE' -ErrorAction SilentlyContinue
@@ -2339,6 +3256,7 @@ $btnPreparar.Add_Click({
         if ($chkOobe.Checked) { $extra += "Los equipos desplegados arrancaran directo al inicio de sesion, sin configuracion inicial.`n" }
         $extra += "`n"
     }
+    if ($chkFondo.Checked) { $extra += "Todas las cuentas tendran el fondo de escritorio de $env:USERNAME y no lo podran cambiar.`n`n" }
     $ok = Preguntar ($extra + "Se validara el sistema, se limpiara y se ejecutara Sysprep.`n`n" +
         "Al terminar el equipo se APAGARA. No lo vuelvas a encender en Windows: " +
         "arranca con Hiren's para capturar.`n`nContinuar?") 'Warning' $true
@@ -2418,10 +3336,23 @@ $btnDesplegar.Add_Click({
         Informar 'Ese es el disco que contiene las imagenes. Elige otro.' 'Error'
         return
     }
+    $nomEq = $txtNomEq.Text.Trim()
+    if (-not $nomEq) {
+        $motivo = 'No se pudo leer el serial del equipo.'
+        if ($script:serialEq -and $script:serialEq.Motivo) { $motivo = $script:serialEq.Motivo }
+        Informar "$motivo`n`nEscribe el nombre que tendra este equipo en 'Nombre del equipo'." 'Warning'
+        $txtNomEq.Focus() | Out-Null
+        return
+    }
+    if (-not (NombreEq-Valido $nomEq)) {
+        Informar "Nombre de equipo no valido: $nomEq`n`nHasta 15 letras, numeros o guiones; no puede ser solo numeros ni empezar o terminar con guion." 'Warning'
+        $txtNomEq.Focus() | Out-Null
+        return
+    }
     if (-not (Avisar-Si-No-PE)) { return }
     $fw = [string]$cmbFw.SelectedItem
     $idx = $script:indices[[Math]::Max(0, $cmbIdx.SelectedIndex)]
-    $nota = ''
+    $nota = "`nEl equipo se llamara $nomEq."
     if ($script:prtOk -and $script:infoImagen -and $d.Bytes -gt 0) {
         $pd = Calcular-Plan $script:infoImagen ([int]$idx) $fw ([long]($d.Bytes / 1MB)) 0
         if (-not $pd.Cabe) {
@@ -2433,8 +3364,102 @@ $btnDesplegar.Add_Click({
     }
     if (-not (Confirmar-Borrado $d $nota)) { return }
     $wim = $script:imagenes[$cmbImg.SelectedIndex].FullName
-    $a = 'desplegar -Imagen "{0}" -Indice {1} -Disco {2} -Firmware {3}' -f $wim, $idx, $d.N, $fw
+    $a = 'desplegar -Imagen "{0}" -Indice {1} -Disco {2} -Firmware {3} -NombreEquipo {4}' -f $wim, $idx, $d.N, $fw, $nomEq
     Iniciar-Accion 'Desplegar' $a
+})
+
+$btnMActImg.Add_Click({ Cargar-MImagenes })
+$cmbMImg.Add_SelectedIndexChanged({ Cargar-MIndices })
+$cmbMIdx.Add_SelectedIndexChanged({ Actualizar-MCarpeta })
+$btnMActLista.Add_Click({ Cargar-Montajes })
+
+$btnMExaminar.Add_Click({
+    $d = New-Object Windows.Forms.OpenFileDialog
+    $d.Filter = 'Imagen de Windows (*.wim)|*.wim'
+    $d.Title = 'Elige la imagen .wim que quieres montar'
+    if (Test-Path $dirImg) { $d.InitialDirectory = $dirImg }
+    if ($d.ShowDialog($form) -eq 'OK') {
+        if ($script:mExtra -notcontains $d.FileName) { $script:mExtra += $d.FileName }
+        Cargar-MImagenes $d.FileName
+    }
+    $d.Dispose()
+})
+
+$btnMCarpeta.Add_Click({
+    $d = New-Object Windows.Forms.FolderBrowserDialog
+    $d.Description = 'Carpeta VACIA donde se montara la imagen (en un disco NTFS)'
+    if ($d.ShowDialog($form) -eq 'OK') { $txtMnt.Text = $d.SelectedPath }
+    $d.Dispose()
+})
+
+$btnMontar.Add_Click({
+    if ($cmbMImg.SelectedIndex -lt 0) { Informar 'Elige la imagen .wim que quieres montar (o usa Examinar...).' 'Warning'; return }
+    $wim = $script:mImagenes[$cmbMImg.SelectedIndex]
+    $idx = $script:mIndices[[Math]::Max(0, $cmbMIdx.SelectedIndex)]
+    $mnt = $txtMnt.Text.Trim().TrimEnd('\')
+    if ($mnt -notmatch '^[A-Za-z]:\\.') { Informar 'Escribe la ruta completa de la carpeta de montaje (por ejemplo D:\Montaje\maestra_1).' 'Warning'; return }
+    if (-not (Ruta-Valida $wim) -or -not (Ruta-Valida $mnt)) { Informar 'Las rutas no pueden tener comillas ni los caracteres & % ! ^ < > |' 'Warning'; return }
+    if ($mnt -match '\\OneDrive') { Informar 'La carpeta de montaje no puede estar dentro de OneDrive (intentaria sincronizar la imagen). Usa por ejemplo C:\Montaje.' 'Warning'; return }
+    try { if ((Get-Item -LiteralPath $wim).IsReadOnly) { Informar 'La imagen es de solo lectura: quitale ese atributo para poder guardar cambios.' 'Warning'; return } } catch {}
+    if (Test-Path -LiteralPath $mnt) {
+        if (-not (Test-Path -LiteralPath $mnt -PathType Container) -or @(Get-ChildItem -LiteralPath $mnt -Force).Count) {
+            Informar "La carpeta no esta vacia:`n$mnt`n`nElige una carpeta vacia o que no exista." 'Warning'
+            return
+        }
+    }
+    foreach ($m in @(Leer-Montajes)) {
+        if ($m.Imagen -eq $wim -and $m.Indice -eq $idx) { Informar "Ese indice de la imagen ya esta montado en:`n$($m.Dir)" 'Warning'; return }
+    }
+    if (-not (Preguntar ("Imagen:  $wim`nIndice:  $idx`nCarpeta: $mnt`n`n" +
+        "Lo que cambies en la carpeta solo pasa al .wim al guardar o al desmontar guardando.`n`nMontar la imagen?"))) { return }
+    $script:ultMontaje = $mnt
+    Iniciar-Accion 'Montar' ('montar -Imagen "{0}" -Indice {1} -Montaje "{2}"' -f $wim, $idx, $mnt)
+})
+
+$btnMAbrir.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    try { Start-Process explorer.exe -ArgumentList "`"$($m.Dir)`"" } catch { Informar "No se pudo abrir la carpeta:`n$($m.Dir)" 'Warning' }
+})
+
+$btnMDrivers.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    $nDrv = 0
+    if (Test-Path $dirDrv) { $nDrv = @(Get-ChildItem $dirDrv -Recurse -Filter *.inf -ErrorAction SilentlyContinue).Count }
+    if (-not $nDrv) { Informar "No hay drivers .inf en la carpeta:`n$dirDrv" 'Warning'; return }
+    if (-not (Preguntar "Se inyectaran $nDrv archivo(s) .inf de la carpeta Drivers en la imagen montada en:`n$($m.Dir)`n`nContinuar?")) { return }
+    Iniciar-Accion 'Inyectar drivers' ('inyectardrivers -Montaje "{0}"' -f $m.Dir)
+})
+
+$btnMGuardar.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    if (-not (Preguntar "Guardar los cambios en:`n$($m.Imagen)  (indice $($m.Indice))`n`nLa imagen sigue montada. Con imagenes grandes puede tardar bastante.`n`nContinuar?")) { return }
+    Iniciar-Accion 'Guardar cambios' ('guardar -Montaje "{0}"' -f $m.Dir)
+})
+
+$btnMDesGuardar.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    if (-not (Preguntar "Desmontar GUARDANDO los cambios en:`n$($m.Imagen)  (indice $($m.Indice))`n`nCierra antes las ventanas y programas que usen la carpeta.`n`nContinuar?")) { return }
+    Iniciar-Accion 'Desmontar' ('desmontar -Guardar -Montaje "{0}"' -f $m.Dir)
+})
+
+$btnMDesDescartar.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    if (-not (Preguntar ("Desmontar DESCARTANDO los cambios?`n`nSe perdera todo lo que hayas cambiado en:`n$($m.Dir)`n" +
+        'desde la ultima vez que guardaste.') 'Warning' $true)) { return }
+    Iniciar-Accion 'Desmontar' ('desmontar -Descartar -Montaje "{0}"' -f $m.Dir)
+})
+
+$btnMCaches.Add_Click({
+    $m = Montaje-Elegido; if (-not $m) { return }
+    if (-not (Preguntar ("Se borraran de la imagen montada en:`n$($m.Dir)`nlas caches de sombreadores de la GPU (AMD, NVIDIA, Intel). " +
+        "El driver las vuelve a crear.`n`nDespues desmonta guardando para que la imagen se pueda montar tambien en Windows.`n`nContinuar?"))) { return }
+    Iniciar-Accion 'Borrar caches' ('limpiarcaches -Montaje "{0}"' -f $m.Dir)
+})
+
+$btnMReparar.Add_Click({
+    if (-not (Preguntar ('Se volveran a montar las imagenes que lo piden (estado "Needs Remount") y se limpiaran ' +
+        "los montajes huerfanos o danados.`n`nContinuar?"))) { return }
+    Iniciar-Accion 'Reparar montajes' 'repararmontajes'
 })
 
 $btnCancelar.Add_Click({
@@ -2456,6 +3481,10 @@ $form.Add_FormClosing({
     if ($script:proc -and -not $script:proc.HasExited) {
         if (Preguntar 'Hay un proceso en curso. Cancelarlo y cerrar?' 'Warning' $true) { Detener-Proceso }
         else { $e.Cancel = $true }
+    } elseif (@(Leer-Montajes).Count) {
+        $si = Preguntar ("Hay imagenes montadas. Si cierras seguiran montadas, pero si reinicias sin " +
+            "desmontarlas se perderan los cambios no guardados.`n`nCerrar de todos modos?") 'Warning' $true
+        if (-not $si) { $e.Cancel = $true }
     }
 })
 
@@ -2465,6 +3494,7 @@ $form.Add_Shown({
     Escribir ("Entorno: {0}   Carpeta: {1}" -f $entorno, $base)
     Escribir ''
     Escribir 'Pasos: 1) Preparar y Sysprep en Windows  ->  2) Capturar desde Hiren''s  ->  3) Desplegar desde Hiren''s.'
+    Escribir 'La pestana 4 monta una imagen .wim en una carpeta para modificarla.'
     Escribir 'Aqui se mostrara la salida de cada proceso.'
     $fwDet = Detectar-Firmware
     if ($fwDet) { $cmbFw.SelectedItem = $fwDet; $lblFw.Text = '(detectado)' }
@@ -2473,12 +3503,44 @@ $form.Add_Shown({
     Cargar-Particiones
     Cargar-Imagenes
     Cargar-Discos
+    Cargar-NombreEquipo
+    Cargar-MImagenes
+    Cargar-Montajes
     if (-not $enPE) {
         try {
             if (Get-LocalUser -Name 'AdministradorCPE' -ErrorAction Stop) { $lblClave.Text = 'AdministradorCPE ya existe: contrasena vacia = no cambiarla' }
         } catch { $lblClave.Text = 'AdministradorCPE se creara o renombrara' }
     }
     $form.Cursor = 'Default'
+    # Continuar Preparar si se detuvo para reiniciar (codigo 4).
+    if (-not $enPE -and (Test-Path -LiteralPath $archivoReanudar)) {
+        try { Remove-ItemProperty -Path $claveRunOnce -Name 'ImagenMaestra' -ErrorAction Stop } catch {}
+        $r = $null
+        try { $r = Import-Clixml -LiteralPath $archivoReanudar -ErrorAction Stop } catch {}
+        if (-not $r) {
+            Remove-Item -LiteralPath $archivoReanudar -Force -ErrorAction SilentlyContinue
+        } else {
+            $tabs.SelectedTab = $tpPrep
+            Escribir "[i] Preparar se detuvo para reiniciar: $($r.Motivo)"
+            $si = Preguntar ("Preparar se detuvo para reiniciar el equipo:`n$($r.Motivo)`n`n" +
+                "Continuar ahora Preparar con las mismas opciones?`n`n" +
+                "Desconecta internet antes de continuar, salvo que aun falte descargar el idioma.")
+            if ($si) {
+                $archivoClave = Join-Path $env:TEMP 'ImagenMaestra_cpe_clave.txt'
+                Remove-Item -LiteralPath $archivoClave -Force -ErrorAction SilentlyContinue
+                if ($r.Clave) {
+                    try { Set-Content -LiteralPath $archivoClave -Value ([string]$r.Clave).Trim() -Encoding ASCII -ErrorAction Stop }
+                    catch { Informar "No se pudo recuperar la contrasena de AdministradorCPE: $($_.Exception.Message)" 'Error'; return }
+                }
+                $script:prepArgs  = [string]$r.Args
+                $script:prepClave = $r.Clave
+                Iniciar-Accion 'Preparar' $script:prepArgs
+            } else {
+                Remove-Item -LiteralPath $archivoReanudar -Force -ErrorAction SilentlyContinue
+                Escribir '[i] Continuacion de Preparar cancelada. Puedes volver a pulsar Preparar cuando quieras.'
+            }
+        }
+    }
 })
 
 if ($enPE) { $tabs.SelectedTab = $tpCap } else { $tabs.SelectedTab = $tpPrep }
@@ -2542,14 +3604,20 @@ exit $codigo
                                    destino alcanza y genera el particionado
     -Accion Aplicar   -Imagen x.wim -DirPlan dir -LetraWin W -Logs dir
                                    aplica las particiones extra y registra WinRE
+    -Accion Nombre                 lee el serial del equipo y propone el nombre
+                                   (escribe SERIAL=, NOMBRE= y MOTIVO=)
+    -Accion PonerNombre -LetraWin W -NombreEquipo x
+                                   pone el nombre en Windows\Panther\unattend.xml
+                                   del Windows desplegado
     -Accion Funciones solo define las funciones (la interfaz carga el archivo)
 
   La descripcion de cada indice PARTICION_<n> guarda como recrearla:
     CPEPART,n-,tipo-,attr-,mb-,usado-,fs-,etiqueta-,recovery-
 #>
 param(
-    [ValidateSet('Revisar', 'Capturar', 'Plan', 'Aplicar', 'Funciones')]
+    [ValidateSet('Revisar', 'Capturar', 'Plan', 'Aplicar', 'Nombre', 'PonerNombre', 'Funciones')]
     [string]$Accion = 'Funciones',
+    [string]$NombreEquipo,
     [string]$Origen,
     [string]$Imagen,
     [string]$Scratch,
@@ -2826,6 +3894,78 @@ function Lineas-Diskpart($plan, [string]$firmware, [int]$disco = -1) {
     return $l
 }
 
+# --- Nombre del equipo: el serial de la BIOS ------------------------
+# Textos que ponen los fabricantes cuando no graban un serial real.
+$SerialesFalsos = 'to be filled|default string|system serial|serial number|chassis serial|not specified|not applicable|^none$|^n/?a$|o\.?e\.?m|^0+$|^1234567|^x+$|invalid'
+# Nombre NetBIOS: hasta 15 letras, numeros o guiones, no solo numeros.
+function Nombre-Valido([string]$n) {
+    return ($n -match '^[A-Za-z0-9-]{1,15}$' -and $n -notmatch '^\d+$' -and $n -notmatch '^-|-$')
+}
+# Quita lo que no vale y, si es largo, deja los 15 ultimos caracteres
+# (suelen ser los que distinguen un equipo de otro).
+function Limpiar-Nombre([string]$s) {
+    $n = ($s -replace '[^A-Za-z0-9-]', '').ToUpper()
+    if ($n.Length -gt 15) { $n = $n.Substring($n.Length - 15) }
+    return $n.Trim('-')
+}
+function Serial-Del-Equipo {
+    $vistos = @()
+    foreach ($q in @(@('Win32_BIOS', 'SerialNumber'), @('Win32_ComputerSystemProduct', 'IdentifyingNumber'), @('Win32_BaseBoard', 'SerialNumber'))) {
+        $v = ''
+        try { $v = ([string](@(Get-WmiObject $q[0] -ErrorAction Stop)[0].($q[1]))).Trim() } catch {}
+        if (-not $v) { continue }
+        $vistos += $v
+        if ($v -match $SerialesFalsos) { continue }
+        $n = Limpiar-Nombre $v
+        if (Nombre-Valido $n) {
+            return New-Object PSObject -Property @{ Serial = $v; Nombre = $n; Motivo = '' }
+        }
+    }
+    $motivo = 'No se pudo leer el serial del equipo.'
+    if ($vistos.Count) { $motivo = "El serial del equipo ('$($vistos[0])') no sirve como nombre." }
+    $s = ''; if ($vistos.Count) { $s = $vistos[0] }
+    return New-Object PSObject -Property @{ Serial = $s; Nombre = ''; Motivo = $motivo }
+}
+# Escribe ComputerName (pase specialize) en el unattend.xml que Windows lee
+# al arrancar por primera vez. Conserva lo que ya tenga (OOBE, idioma...).
+function Poner-NombreEquipo([string]$letraWin, [string]$nombre) {
+    if (-not (Nombre-Valido $nombre)) { throw "Nombre de equipo no valido: $nombre" }
+    $ns = 'urn:schemas-microsoft-com:unattend'
+    $panther = "$($letraWin):\Windows\Panther"
+    $archivo = Join-Path $panther 'unattend.xml'
+    $xml = New-Object Xml.XmlDocument
+    if (Test-Path -LiteralPath $archivo) { $xml.Load($archivo) }
+    else {
+        New-Item -ItemType Directory -Force -Path $panther | Out-Null
+        $xml.LoadXml("<?xml version=`"1.0`" encoding=`"utf-8`"?><unattend xmlns=`"$ns`"></unattend>")
+    }
+    $nm = New-Object Xml.XmlNamespaceManager($xml.NameTable)
+    $nm.AddNamespace('u', $ns)
+    $pase = $xml.SelectSingleNode("/u:unattend/u:settings[@pass='specialize']", $nm)
+    if (-not $pase) {
+        $pase = $xml.CreateElement('settings', $ns)
+        $pase.SetAttribute('pass', 'specialize')
+        [void]$xml.DocumentElement.PrependChild($pase)
+    }
+    $comp = $pase.SelectSingleNode("u:component[@name='Microsoft-Windows-Shell-Setup']", $nm)
+    if (-not $comp) {
+        $comp = $xml.CreateElement('component', $ns)
+        $comp.SetAttribute('name', 'Microsoft-Windows-Shell-Setup')
+        $comp.SetAttribute('processorArchitecture', 'amd64')
+        $comp.SetAttribute('publicKeyToken', '31bf3856ad364e35')
+        $comp.SetAttribute('language', 'neutral')
+        $comp.SetAttribute('versionScope', 'nonSxS')
+        [void]$pase.AppendChild($comp)
+    }
+    $cn = $comp.SelectSingleNode('u:ComputerName', $nm)
+    if (-not $cn) {
+        $cn = $xml.CreateElement('ComputerName', $ns)
+        [void]$comp.PrependChild($cn)
+    }
+    $cn.InnerText = $nombre
+    $xml.Save($archivo)
+}
+
 if ($Accion -eq 'Funciones') { return }
 $ErrorActionPreference = 'Stop'
 try {
@@ -2903,6 +4043,19 @@ try {
                     else { Write-Host '   [AVISO] No se pudo registrar WinRE; Windows lo intentara al arrancar.' -ForegroundColor Yellow }
                 }
             }
+            exit 0
+        }
+        'Nombre' {
+            # Salida para el .cmd: una linea CLAVE=valor por dato.
+            $s = Serial-Del-Equipo
+            "SERIAL=$($s.Serial)"
+            "NOMBRE=$($s.Nombre)"
+            "MOTIVO=$($s.Motivo)"
+            exit 0
+        }
+        'PonerNombre' {
+            Poner-NombreEquipo $LetraWin $NombreEquipo
+            Write-Host "   [OK] El equipo se llamara $NombreEquipo (Windows\Panther\unattend.xml)." -ForegroundColor Green
             exit 0
         }
     }

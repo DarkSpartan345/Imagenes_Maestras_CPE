@@ -1,0 +1,26 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {1}Introducción}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Materiales utilizados}{2}{section.1.1}%
+\contentsline {chapter}{\numberline {2}Obtención de la herramienta}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Descargar el repositorio}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Copiar la carpeta al disco externo}{5}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Fase 1: preparación del equipo de referencia}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Antes de empezar}{6}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Elegir las opciones}{7}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Comprobaciones automáticas}{9}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Ajuste del idioma (es-MX)}{9}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Limpieza y Sysprep}{11}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Fase 2: captura de la imagen}{12}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Arrancar desde la memoria USB}{12}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Abrir la herramienta desde el disco externo}{13}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Configurar la captura}{14}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Ejecutar la captura}{15}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Fase 3: despliegue de la imagen}{18}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Arrancar el equipo de destino}{18}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Elegir imagen y disco de destino}{18}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Proceso automático}{19}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Primer arranque del equipo desplegado}{20}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Verificación del equipo desplegado}{23}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Particiones}{23}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Entorno de recuperación (WinRE)}{23}{section.6.2}%
+\contentsline {chapter}{\numberline {7}Resumen rápido}{26}{chapter.7}%
