@@ -1,0 +1,34 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {chapter}{\numberline {1}Introducción}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Qué hace la herramienta}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Materiales utilizados}{3}{section.1.2}%
+\contentsline {chapter}{\numberline {2}Obtención de la herramienta}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Descargar el repositorio}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Copiar la carpeta al disco externo}{5}{section.2.2}%
+\contentsline {chapter}{\numberline {3}Fase 1: preparación del equipo de referencia}{7}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Antes de empezar}{7}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Elegir las opciones}{8}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Comprobaciones automáticas}{10}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Idioma es-MX y reinicios guiados}{11}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Limpieza y Sysprep}{13}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Fase 2: captura de la imagen}{15}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Arrancar desde la memoria USB}{15}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Abrir la herramienta desde el disco externo}{16}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Configurar la captura}{17}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Ejecutar la captura}{18}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Completar una imagen sin particiones}{20}{section.4.5}%
+\contentsline {chapter}{\numberline {5}Fase 3: despliegue de la imagen}{21}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Arrancar el equipo de destino}{21}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Elegir imagen y disco de destino}{21}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Nombre del equipo}{22}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Confirmar el borrado}{22}{section.5.4}%
+\contentsline {section}{\numberline {5.5}Proceso automático}{23}{section.5.5}%
+\contentsline {section}{\numberline {5.6}Primer arranque del equipo desplegado}{25}{section.5.6}%
+\contentsline {chapter}{\numberline {6}Verificación del equipo desplegado}{27}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Verificación automática con CuentasCPE.cmd}{27}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Particiones}{27}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Entorno de recuperación (WinRE)}{28}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Solución de problemas}{30}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Códigos de salida}{30}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Problemas frecuentes}{30}{section.7.2}%
+\contentsline {chapter}{\numberline {8}Resumen rápido}{31}{chapter.8}%
